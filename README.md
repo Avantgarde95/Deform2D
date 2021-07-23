@@ -1,3 +1,17 @@
+# Deform2D
+
+### About
+
+Fork of [Deform2D](https://www.dgp.toronto.edu/~rms/software/Deform2D/index.html) for studying 2D deformation.
+
+Differences from the original source code
+- Solution file is updated to Visual Studio 2019 version.
+- MFC (used for file dialog) dependency is removed, and the file dialog is replaced to console input (`std::cin`).
+- Supports .obj files which don't have the vertex normals. (i.e Faces can have `f number number number` form.)
+
+### Original README
+
+```text
 Deform2D is an interactive demo program which implements the 
 As-Rigid-As-Possible Shape Manipulation technique described in:
 
@@ -47,3 +61,4 @@ Wml\* is the WildMagic2 library (the compiled DLL is included)
 (*) your .OBJ mesh must have face ('f') lines in the form vtx/tex/norm or vtx//norm. Some packages export just the vertex indices, which the OBJ loader can't handle.
 
 - Ryan Schmidt (rms@unknownroad.com) - Feb 2009 
+```
