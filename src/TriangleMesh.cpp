@@ -27,8 +27,8 @@ TriangleMesh::TriangleMesh()
 }
 
 
-TriangleMesh::TriangleMesh(string filename, 
-	     unsigned int vertex_sizehint, 
+TriangleMesh::TriangleMesh(string filename,
+	     unsigned int vertex_sizehint,
 	     unsigned int triangle_sizehint)
   : tm_filename(filename)
 {
@@ -43,7 +43,7 @@ TriangleMesh::~TriangleMesh()
 }
 
 
-void TriangleMesh::GetVertex( VertexID vID, Wml::Vector3f & vVertex, Wml::Vector3f * pNormal ) const 
+void TriangleMesh::GetVertex( VertexID vID, Wml::Vector3f & vVertex, Wml::Vector3f * pNormal ) const
 {
 	vVertex.X() = tm_vertices[ vID * TM_VERTEX_STRIDE ];
 	vVertex.Y() = tm_vertices[ vID * TM_VERTEX_STRIDE + 1];
@@ -74,8 +74,8 @@ bool
 TriangleMesh::read(const char * pFilename, FileFormat eFormat)
 {
 	tm_filename = std::string(pFilename);
-	
-	switch (eFormat) { 
+
+	switch (eFormat) {
 		case OBJ_FORMAT:
 			return tm_readobj();
 			break;
@@ -108,12 +108,12 @@ TriangleMesh::write(const char * pFilename, FileFormat eFormat)
 
 
 bool TriangleMesh::HasVertexTextureCoords() const
-{ 
+{
 	return (tm_texture_coords.size() / TM_TEXTURE_STRIDE) == GetNumVertices();
 }
 bool TriangleMesh::HasTriangleTextureCoords() const
-{ 
-	return (tm_triTexCoords.size() / TM_TRITEXCOORD_STRIDE) == GetNumTriangles(); 
+{
+	return (tm_triTexCoords.size() / TM_TRITEXCOORD_STRIDE) == GetNumTriangles();
 }
 
 
@@ -132,7 +132,7 @@ TriangleMesh::SetVertexData(unsigned int index, float * vertex,
   if(color != NULL)
     memcpy(GetColorPointer() + vi, color, sizeof(float)*TM_VERTEX_STRIDE);
   if(texture_coord != NULL)
-    memcpy(GetTextureCoordsPointer() + TM_TEXTURE_INDEX(index,0), 
+    memcpy(GetTextureCoordsPointer() + TM_TEXTURE_INDEX(index,0),
 	   texture_coord, sizeof(float)*TM_TEXTURE_STRIDE);
 }
 
@@ -171,7 +171,7 @@ TriangleMesh::AddVertexData(unsigned int index, float * vertex,
 		unsigned int ti = TM_TEXTURE_INDEX(index,0);
 		if(tm_texture_coords.size() < ti+TM_TEXTURE_STRIDE)
 			tm_texture_coords.resize(ti+TM_TEXTURE_STRIDE);
-		memcpy(GetTextureCoordsPointer() + ti, 
+		memcpy(GetTextureCoordsPointer() + ti,
 			texture_coord, sizeof(float)*TM_TEXTURE_STRIDE);
 	}
 }
@@ -206,7 +206,7 @@ TriangleMesh::AddTriTexCoordData( unsigned int nIndex, const float * pUV1, const
 
 
 unsigned int
-TriangleMesh::AppendVertexData(float * vertex, float * normal, 
+TriangleMesh::AppendVertexData(float * vertex, float * normal,
 				float * color, float * texture_coord)
 {
   unsigned int vi = 0;
@@ -232,7 +232,7 @@ TriangleMesh::AppendVertexData(float * vertex, float * normal,
   if(texture_coord != NULL){
     vi = (unsigned int)tm_texture_coords.size();
     tm_texture_coords.resize(vi+TM_TEXTURE_STRIDE);
-    memcpy(GetTextureCoordsPointer() + vi, 
+    memcpy(GetTextureCoordsPointer() + vi,
 	   texture_coord, sizeof(float)*TM_TEXTURE_STRIDE);
     ret = vi / TM_TEXTURE_STRIDE;
   }
@@ -241,7 +241,7 @@ TriangleMesh::AppendVertexData(float * vertex, float * normal,
 
 
 unsigned int
-TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector3f * pNormal, 
+TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector3f * pNormal,
 							    bool bFlipNormal, const Wml::Vector2f * pTextureCoord, const Wml::Vector3f * pColor )
 {
 #if TM_VERTEX_STRIDE != 4
@@ -257,7 +257,7 @@ TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector
 	tm_vertices[vi+2] = pVertex->Z();
 	tm_vertices[vi+3] = 1.0f;
     ret = vi / TM_VERTEX_STRIDE;
-  }	
+  }
   if(pNormal != NULL){
     vi = (unsigned int)tm_normals.size();
     tm_normals.resize(vi+TM_VERTEX_STRIDE);
@@ -398,7 +398,7 @@ TriangleMesh::Reserve(unsigned int mask, unsigned int new_size)
 }
 
 
-void 
+void
 TriangleMesh::Resize(unsigned int mask, unsigned int new_size)
 {
   if(mask & TM_VERTEX_BIT)
@@ -435,7 +435,7 @@ void TriangleMesh::Clear( unsigned int nBitMask )
 
 
 void
-TriangleMesh::GetBoundingBox( float box[6] ) 
+TriangleMesh::GetBoundingBox( float box[6] )
 {
 	box[0] = box[2] = box[4] = FLT_MAX;
 	box[1] = box[3] = box[5] = -FLT_MAX;
@@ -484,7 +484,7 @@ float TriangleMesh::GetMaxEdgeLength() const
 
 
 
-void 
+void
 TriangleMesh::tm_initialize(unsigned int vertex_sizehint, unsigned int triangle_sizehint)
 {
   if(vertex_sizehint != 0){
@@ -524,6 +524,8 @@ bool TriangleMesh::tm_readobj()
 	//  "optimizes" the mesh...argh!)
 	std::vector<Wml::Vector3f> vNormals;
 
+	bool bHasNormals = false;
+
 	unsigned int ivec[3];
 	while(in){
 		ostrstream s;
@@ -532,7 +534,7 @@ bool TriangleMesh::tm_readobj()
 			continue;
 		switch(command.c_str()[0]){
 
-		case 'v':    
+		case 'v':
 			in >> fvec[0] >> fvec[1];
 			if(!in)
 				continue;
@@ -542,6 +544,7 @@ bool TriangleMesh::tm_readobj()
 				AppendVertexData(fvec);
 				break;
 			case 'n': // vertex normal
+				bHasNormals = true;
 				in >> fvec[2];
 				fvec.normalize();
 				vNormals.push_back( Wml::Vector3f( fvec[0], fvec[1], fvec[2] ) );
@@ -562,11 +565,17 @@ bool TriangleMesh::tm_readobj()
 				in >> tv1 >> c1 >> tt1 >> c2 >> tn1;
 				in >> tv2 >> c1 >> tt2 >> c2 >> tn2;
 				in >> tv3 >> c1 >> tt3 >> c2 >> tn3;
-				
-			} else {
+
+			}
+			else if ( bHasNormals ) {
 				in >> tv1 >> c1 >> c2 >> tn1;
 				in >> tv2 >> c1 >> c2 >> tn2;
 				in >> tv3 >> c1 >> c2 >> tn3;
+			}
+			else {
+				in >> tv1;
+				in >> tv2;
+				in >> tv3;
 			}
 			ivec[0] = tv1-1; ivec[1] = tv2-1; ivec[2] = tv3-1;
 			AppendTriangleData(ivec);
@@ -605,8 +614,8 @@ bool TriangleMesh::tm_writeobj()
 
 	// triangle texcoords override vtx texcoords
 	if (bHaveTriangleTexCoords)
-		bHaveVertexTexCoords = false;		
-		
+		bHaveVertexTexCoords = false;
+
 	unsigned int nVerts = GetNumVertices();
 	Wml::Vector3f vert, norm;
 	Wml::Vector2f tex;
@@ -614,10 +623,10 @@ bool TriangleMesh::tm_writeobj()
 		GetVertex(i, vert);
 		GetNormal(i, norm);
 		out << "v " << vert.X() << " " << vert.Y() << " " << vert.Z() << endl;
-		out << "vn " << norm.X() << " " << norm.Y() << " " << norm.Z() << endl; 
+		out << "vn " << norm.X() << " " << norm.Y() << " " << norm.Z() << endl;
 		if ( bHaveVertexTexCoords ) {
 			GetTextureCoords(i, tex);
-			out << "vt " << tex.X() << " " << tex.Y() << endl; 
+			out << "vt " << tex.X() << " " << tex.Y() << endl;
 		}
 	}
 
@@ -638,16 +647,16 @@ bool TriangleMesh::tm_writeobj()
 	for (unsigned int i = 0; i < nTris; ++i) {
 		GetTriangle(i, tri);
 		if ( bHaveVertexTexCoords ) {
-			out << "f " << (tri[0]+1) << "/" << (tri[0]+1) << "/" << (tri[0]+1) 
+			out << "f " << (tri[0]+1) << "/" << (tri[0]+1) << "/" << (tri[0]+1)
 				<< " " << (tri[1]+1) << "/" << (tri[1]+1) << "/" << (tri[1]+1)
 				<< " " << (tri[2]+1) << "/" << (tri[2]+1) << "/" << (tri[2]+1) << endl;
 		} else if ( bHaveTriangleTexCoords) {
-			out << "f " << (tri[0]+1) << "/" << ((i*3)+1) << "/" << (tri[0]+1) 
+			out << "f " << (tri[0]+1) << "/" << ((i*3)+1) << "/" << (tri[0]+1)
 				<< " " << (tri[1]+1) << "/" <<  ((i*3)+2) << "/" << (tri[1]+1)
 				<< " " << (tri[2]+1) << "/" <<  ((i*3)+3) << "/" << (tri[2]+1) << endl;
-			
+
 		} else {
-			out << "f " << (tri[0]+1) << "//" << (tri[0]+1) 
+			out << "f " << (tri[0]+1) << "//" << (tri[0]+1)
 				<< " " << (tri[1]+1) << "//" << (tri[1]+1)
 				<< " " << (tri[2]+1) << "//" << (tri[2]+1) << endl;
 		}
@@ -666,7 +675,7 @@ bool TriangleMesh::tm_writeMeshLite()
 		return false;
 
 	bool bHaveTexCoords = GetTextureCoords().size() > 0;
-	
+
 	// write header
 	out << "PMeshLite" << std::endl;
 
@@ -678,7 +687,7 @@ bool TriangleMesh::tm_writeMeshLite()
 	Wml::Vector3f norm;
 	for (unsigned int i = 0; i < nVerts; ++i) {
 		GetNormal(i, norm);
-		out << norm.X() << " " << norm.Y() << " " << norm.Z() << endl; 
+		out << norm.X() << " " << norm.Y() << " " << norm.Z() << endl;
 	}
 
 
@@ -692,7 +701,7 @@ bool TriangleMesh::tm_writeMeshLite()
 		out << "Vertex " << (i+1) << " " << vert.X() << " " << vert.Y() << " " << vert.Z() << std::endl;
 		//if ( bHaveTexCoords ) {
 		//	GetTextureCoords(i, tex);
-		//	out << "vt " << tex.X() << " " << tex.Y() << endl; 
+		//	out << "vt " << tex.X() << " " << tex.Y() << endl;
 		//}
 	}
 
@@ -702,11 +711,11 @@ bool TriangleMesh::tm_writeMeshLite()
 		GetTriangle(i, tri);
 		out << "Face " << (i+1) << " " << (tri[0]+1) << " " << (tri[1]+1) << " " << (tri[2]+1) << std::endl;
 		//if ( bHaveTexCoords ) {
-		//	out << "f " << (tri[0]+1) << "/" << (tri[0]+1) << "/" << (tri[0]+1) 
+		//	out << "f " << (tri[0]+1) << "/" << (tri[0]+1) << "/" << (tri[0]+1)
 		//		<< " " << (tri[1]+1) << "/" << (tri[1]+1) << "/" << (tri[1]+1)
 		//		<< " " << (tri[2]+1) << "/" << (tri[2]+1) << "/" << (tri[2]+1) << endl;
 		//} else {
-		//	out << "f " << (tri[0]+1) << "//" << (tri[0]+1) 
+		//	out << "f " << (tri[0]+1) << "//" << (tri[0]+1)
 		//		<< " " << (tri[1]+1) << "//" << (tri[1]+1)
 		//		<< " " << (tri[2]+1) << "//" << (tri[2]+1) << endl;
 		//}

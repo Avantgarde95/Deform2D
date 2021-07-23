@@ -19,7 +19,7 @@
 
 #ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
 #define _WIN32_WINNT _WIN32_WINNT_WIN10		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
-#endif						
+#endif
 
 #ifndef _WIN32_WINDOWS		// Allow use of features specific to Windows 98 or later.
 #define _WIN32_WINDOWS 0x0410 // Change this to the appropriate value to target Windows Me or later.
@@ -29,12 +29,14 @@
 #define _WIN32_IE 0x0400	// Change this to the appropriate value to target IE 5.0 or later.
 #endif
 
+/*
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
 
 #include <afxdlgs.h>
+*/
 
 
 #ifdef min

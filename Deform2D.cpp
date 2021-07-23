@@ -63,14 +63,14 @@ void MakeSquareMesh()
 			m_mesh.AppendTriangleData( nTri2 );
 		}
 	}
-			
+
 	InitializeDeformedMesh();
 	glutPostRedisplay();
 }
 
 
 
-void UpdateScale() 
+void UpdateScale()
 {
 	glGetIntegerv(GL_VIEWPORT, m_nViewport);
 	float fViewCenterX = (float)m_nViewport[2] / 2;
@@ -102,7 +102,7 @@ Wml::Vector2f WorldToView( const Wml::Vector2f & vPoint )
 void InitializeDeformedMesh()
 {
 	m_deformedMesh.Clear();
-	
+
 	unsigned int nVerts = m_mesh.GetNumVertices();
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
 		Wml::Vector3f vVertex;
@@ -123,7 +123,7 @@ void InitializeDeformedMesh()
 
 
 
-void UpdateDeformedMesh() 
+void UpdateDeformedMesh()
 {
 	ValidateConstraints();
 	m_deformer.UpdateDeformedMesh( &m_deformedMesh, true );
@@ -131,9 +131,9 @@ void UpdateDeformedMesh()
 
 
 // deformer stuff
-void InvalidateConstraints() 
-{ 
-	m_bConstraintsValid = false; 
+void InvalidateConstraints()
+{
+	m_bConstraintsValid = false;
 }
 
 void ValidateConstraints()
@@ -169,9 +169,9 @@ unsigned int FindHitVertex( float nX, float nY )
 		float fX = vView.X();
 		float fY = vView.Y();
 
-		double fDist = sqrt( 
+		double fDist = sqrt(
 			(double)((nX - fX)*(nX - fX) + (nY-fY)*(nY-fY) ));
-		if ( fDist < 5 ) 
+		if ( fDist < 5 )
 			return i;
 	}
 
@@ -183,7 +183,7 @@ unsigned int FindHitVertex( float nX, float nY )
 
 
 
-void OnMouseClick(int button, int state, int x, int y) 
+void OnMouseClick(int button, int state, int x, int y)
 {
 	if ( button == GLUT_LEFT_BUTTON ) {
 
@@ -236,16 +236,15 @@ void OnMouseMove(int x, int y)
 void OnKeyboard(unsigned char key, int x, int y)
 {
 	if ( key == 'f' ) {
-		CFileDialog openDlg(TRUE, "obj", "mesh.obj", 0, "OBJ Files (*.obj)|*.obj|");
-		if ( openDlg.DoModal() == IDOK ) {
+		std::cout << "Mesh path (.obj): ";
+		std::string meshPath;
+		std::cin >> meshPath;
+		m_mesh.Clear();
+		m_mesh.read( meshPath.c_str() );
+		m_vSelected.clear();
+		InitializeDeformedMesh();
 
-			m_mesh.Clear();
-			m_mesh.read( (LPCTSTR)openDlg.GetPathName() );
-			m_vSelected.clear();
-			InitializeDeformedMesh();
-
-			glutPostRedisplay();
-		}
+		glutPostRedisplay();
 	}
 }
 
@@ -306,7 +305,7 @@ void OnRender()
 
 
 
-void OnReshape( int width, int height ) 
+void OnReshape( int width, int height )
 {
 	glViewport(0, 0, width, height);
 
