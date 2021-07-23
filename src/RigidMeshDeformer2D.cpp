@@ -137,7 +137,7 @@ void RigidMeshDeformer2D::UpdateConstraint( Constraint & cons )
 	std::set<Constraint>::iterator found( m_vConstraints.find(cons) );
 	if ( found != m_vConstraints.end() ) {
 
-		(*found).vConstrainedPos = cons.vConstrainedPos;
+		const_cast<Wml::Vector2f&>((*found).vConstrainedPos) = cons.vConstrainedPos;
 		m_vDeformedVerts[cons.nVertex].vPosition = cons.vConstrainedPos;
 
 	} else {
@@ -806,7 +806,7 @@ void RigidMeshDeformer2D::ValidateDeformedMesh( bool bRigid )
 	int k = 0;
 	std::set<Constraint>::iterator cur(m_vConstraints.begin()), end(m_vConstraints.end());
 	while ( cur != end ) {
-		Constraint & c = (*cur++);
+		Constraint & c = const_cast<Constraint&>(*cur++);
 		vQ[ 2*k ] = c.vConstrainedPos.X();
 		vQ[ 2*k + 1] = c.vConstrainedPos.Y();
 		++k;
