@@ -1,10 +1,11 @@
 #define FREEGLUT_STATIC
 #include <GL/glut.h>
 
-#include <RigidMeshDeformer2D.h>
+#include <Deform2D.h>
 
 #include "TriangleMesh.h"
 
+#include <set>
 
 rmsmesh::TriangleMesh m_mesh;
 float m_bounds[6];
@@ -12,7 +13,7 @@ Wml::Vector2f m_vTranslate;
 float m_fScale;
 rmsmesh::TriangleMesh m_deformedMesh;
 
-rmsmesh::RigidMeshDeformer2D m_deformer;
+void* m_deformer;
 bool m_bConstraintsValid;
 
 std::set<unsigned int> m_vSelected;
@@ -125,7 +126,7 @@ void InitializeDeformedMesh()
 	}
 
 	//m_deformer.InitializeFromMesh( &m_mesh );
-	m_deformer.SetMesh(verticesToSubmit.data(), verticesToSubmit.size(), facesToSubmit.data(), facesToSubmit.size() / 3);
+	Deform2D_SetMesh(m_deformer, verticesToSubmit.data(), verticesToSubmit.size(), facesToSubmit.data(), facesToSubmit.size() / 3);
 	InvalidateConstraints();
 }
 
@@ -139,7 +140,7 @@ void UpdateDeformedMesh()
 	std::vector<Deform2D_Vector2> deformedVertices(m_deformedMesh.GetVertexCount());
 	std::vector<int> deformedFaces(m_deformedMesh.GetTriangleCount() * 3);
 
-	m_deformer.GetDeformedMesh(deformedVertices.data(), deformedVertices.size(), true);
+	Deform2D_GetDeformedMesh(m_deformer, deformedVertices.data(), deformedVertices.size(), true);
 
 	for (int i = 0; i < m_deformedMesh.GetVertexCount(); i++) {
 		m_deformedMesh.SetVertex(i, {
@@ -168,10 +169,11 @@ void ValidateConstraints()
 		unsigned int nVertex = *cur++;
 		Wml::Vector3f vVertex;
 		m_deformedMesh.GetVertex( nVertex, vVertex);
-		m_deformer.SetDeformedHandle(nVertex, { vVertex.X(), vVertex.Y() });
+		Deform2D_Vector2 vertexToSubmit = { vVertex.X(), vVertex.Y() };
+		Deform2D_SetDeformedHandle(m_deformer, nVertex, &vertexToSubmit);
 	}
 
-	m_deformer.ForceValidation();
+	Deform2D_ForceValidation(m_deformer);
 
 	m_bConstraintsValid = true;
 }
@@ -223,7 +225,7 @@ void OnMouseClick(int button, int state, int x, int y)
 				m_vSelected.insert(nHit);
 			else {
 				m_vSelected.erase(nHit);
-				m_deformer.RemoveHandle(nHit);
+				Deform2D_RemoveHandle(m_deformer, nHit);
 
 				// restore position
 				Wml::Vector3f vVertex;
@@ -354,9 +356,15 @@ int main(int argc, char ** argv)
 	glutMotionFunc( OnMouseMove );
 	glutKeyboardFunc( OnKeyboard );
 
+	m_deformer = Deform2D_CreateDeformer();
 	MakeSquareMesh();
 
 	glutMainLoop();
+
+	atexit([]() {
+		Deform2D_DestroyDeformer(m_deformer);
+	});
+
 	return 0;
 }
 

@@ -11,7 +11,7 @@
 
 namespace rmsmesh {
 
-class DEFORM2D_EXPORT RigidMeshDeformer2D
+class RigidMeshDeformer2D
 {
 public:
 	RigidMeshDeformer2D( );
@@ -30,7 +30,7 @@ public:
 	//const Wml::Vector2f & GetDeformedHandle( unsigned int nHandle );
 
 	//! nHandle is vertex ID
-	void SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2& vHandle );
+	void SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2* vHandle );
 
 	//void TransformPoint( Wml::Vector2f & vTransform );
 	void UnTransformPoint( Deform2D_Vector2 & vTransform );

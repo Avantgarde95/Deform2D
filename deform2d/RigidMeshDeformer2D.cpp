@@ -13,9 +13,9 @@ RigidMeshDeformer2D::RigidMeshDeformer2D()
 	InvalidateSetup();
 }
 
-void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2& vHandle )
+void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2* vHandle )
 {
-	Constraint c(nHandle, { vHandle.x, vHandle.y });
+	Constraint c(nHandle, { vHandle->x, vHandle->y });
 	UpdateConstraint(c);
 }
 
