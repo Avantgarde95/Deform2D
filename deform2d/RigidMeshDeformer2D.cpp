@@ -13,9 +13,9 @@ RigidMeshDeformer2D::RigidMeshDeformer2D()
 	InvalidateSetup();
 }
 
-void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Wml::Vector2f & vHandle )
+void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2& vHandle )
 {
-	Constraint c(nHandle, vHandle);
+	Constraint c(nHandle, { vHandle.x, vHandle.y });
 	UpdateConstraint(c);
 }
 
@@ -28,7 +28,7 @@ void RigidMeshDeformer2D::RemoveHandle( unsigned int nHandle )
 }
 
 
-void RigidMeshDeformer2D::UnTransformPoint( Wml::Vector2f & vTransform )
+void RigidMeshDeformer2D::UnTransformPoint( Deform2D_Vector2& vTransform )
 {
 	// find triangle
 	size_t nTris = m_vTriangles.size();
@@ -38,14 +38,16 @@ void RigidMeshDeformer2D::UnTransformPoint( Wml::Vector2f & vTransform )
 		Wml::Vector2f v3( m_vDeformedVerts[m_vTriangles[i].nVerts[2]].vPosition );
 
 		float fBary1, fBary2, fBary3;
-		Wml::BarycentricCoords(v1,v2,v3,vTransform, fBary1, fBary2, fBary3 );
+		Wml::BarycentricCoords(v1, v2, v3, { vTransform.x, vTransform.y }, fBary1, fBary2, fBary3);
 		if ( fBary1 < 0 || fBary1 > 1 || fBary2 < 0 || fBary2 > 1 || fBary3 < 0 || fBary3 > 1 )
 			continue;
 
 		Wml::Vector2f v1Init( m_vInitialVerts[m_vTriangles[i].nVerts[0]].vPosition );
 		Wml::Vector2f v2Init( m_vInitialVerts[m_vTriangles[i].nVerts[1]].vPosition );
 		Wml::Vector2f v3Init( m_vInitialVerts[m_vTriangles[i].nVerts[2]].vPosition );
-		vTransform = fBary1 * v1Init + fBary2 * v2Init + fBary3 * v3Init;
+		auto transform = fBary1 * v1Init + fBary2 * v2Init + fBary3 * v3Init;
+		vTransform.x = transform[0];
+		vTransform.y = transform[1];
 		return;
 	}
 

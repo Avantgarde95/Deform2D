@@ -168,7 +168,7 @@ void ValidateConstraints()
 		unsigned int nVertex = *cur++;
 		Wml::Vector3f vVertex;
 		m_deformedMesh.GetVertex( nVertex, vVertex);
-		m_deformer.SetDeformedHandle( nVertex, Wml::Vector2f( vVertex.X(), vVertex.Y() ) );
+		m_deformer.SetDeformedHandle(nVertex, { vVertex.X(), vVertex.Y() });
 	}
 
 	m_deformer.ForceValidation();
