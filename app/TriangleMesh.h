@@ -14,8 +14,6 @@
 #include <WmlVector2.h>
 #include <WmlVector3.h>
 
-#include "Common.h"
-
 #define TM_VERTEX_STRIDE 4    // normal and color same as vertex
 #define TM_TEXTURE_STRIDE 2
 #define TM_TRIANGLE_STRIDE 3
@@ -40,7 +38,7 @@
 namespace rmsmesh
 {
 
-class DEFORM2D_EXPORT TriangleMesh
+class TriangleMesh
 {
 public:
 	enum FileFormat {OBJ_FORMAT, MESHLITE_FORMAT};

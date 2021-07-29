@@ -3,6 +3,8 @@
 
 #include <RigidMeshDeformer2D.h>
 
+#include "TriangleMesh.h"
+
 
 rmsmesh::TriangleMesh m_mesh;
 float m_bounds[6];
@@ -97,6 +99,9 @@ Wml::Vector2f WorldToView( const Wml::Vector2f & vPoint )
 
 void InitializeDeformedMesh()
 {
+	std::vector<Deform2D_Vector2> verticesToSubmit;
+	std::vector<unsigned int> facesToSubmit;
+
 	m_deformedMesh.Clear();
 
 	unsigned int nVerts = m_mesh.GetNumVertices();
@@ -104,6 +109,8 @@ void InitializeDeformedMesh()
 		Wml::Vector3f vVertex;
 		m_mesh.GetVertex(i, vVertex);
 		m_deformedMesh.AppendVertexData(vVertex);
+
+		verticesToSubmit.push_back({ vVertex.X(), vVertex.Y() });
 	}
 
 	unsigned int nTris = m_mesh.GetNumTriangles();
@@ -111,9 +118,14 @@ void InitializeDeformedMesh()
 		unsigned int nTriangle[3];
 		m_mesh.GetTriangle(i,nTriangle);
 		m_deformedMesh.AppendTriangleData(nTriangle);
+
+		facesToSubmit.emplace_back(nTriangle[0]);
+		facesToSubmit.emplace_back(nTriangle[1]);
+		facesToSubmit.emplace_back(nTriangle[2]);
 	}
 
-	m_deformer.InitializeFromMesh( &m_mesh );
+	//m_deformer.InitializeFromMesh( &m_mesh );
+	m_deformer.SetMesh(verticesToSubmit.data(), verticesToSubmit.size(), facesToSubmit.data(), facesToSubmit.size() / 3);
 	InvalidateConstraints();
 }
 
@@ -122,7 +134,20 @@ void InitializeDeformedMesh()
 void UpdateDeformedMesh()
 {
 	ValidateConstraints();
-	m_deformer.UpdateDeformedMesh( &m_deformedMesh, true );
+	//m_deformer.UpdateDeformedMesh( &m_deformedMesh, true );
+
+	std::vector<Deform2D_Vector2> deformedVertices(m_deformedMesh.GetVertexCount());
+	std::vector<int> deformedFaces(m_deformedMesh.GetTriangleCount() * 3);
+
+	m_deformer.GetDeformedMesh(deformedVertices.data(), deformedVertices.size(), true);
+
+	for (int i = 0; i < m_deformedMesh.GetVertexCount(); i++) {
+		m_deformedMesh.SetVertex(i, {
+			deformedVertices[i].x,
+			deformedVertices[i].y,
+			0.0f
+		});
+	}
 }
 
 

@@ -15,16 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DLLMain.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="LinearAlgebra.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="RigidMeshDeformer2D.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleMesh.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="WmlExtTriangleUtils.cpp">
@@ -33,18 +24,15 @@
     <ClCompile Include="WmlLinearSystemExt.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Deform2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LinearAlgebra.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="RigidMeshDeformer2D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="rmsdebug.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="TriangleMesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="WmlExtTriangleUtils.h">
@@ -54,6 +42,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Deform2D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

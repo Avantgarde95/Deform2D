@@ -171,19 +171,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DLLMain.cpp" />
-    <ClCompile Include="LinearAlgebra.cpp" />
+    <ClCompile Include="Deform2D.cpp" />
     <ClCompile Include="RigidMeshDeformer2D.cpp" />
-    <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="WmlExtTriangleUtils.cpp" />
     <ClCompile Include="WmlLinearSystemExt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="LinearAlgebra.h" />
+    <ClInclude Include="Deform2D.h" />
     <ClInclude Include="RigidMeshDeformer2D.h" />
     <ClInclude Include="rmsdebug.h" />
-    <ClInclude Include="TriangleMesh.h" />
     <ClInclude Include="WmlExtTriangleUtils.h" />
     <ClInclude Include="WmlLinearSystemExt.h" />
   </ItemGroup>

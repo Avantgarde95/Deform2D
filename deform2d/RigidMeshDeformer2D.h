@@ -7,7 +7,6 @@
 #include <WmlBox2.h>
 #include <WmlGMatrix.h>
 #include "WmlLinearSystemExt.h"
-#include "TriangleMesh.h"
 #include "Common.h"
 
 namespace rmsmesh {
@@ -39,9 +38,18 @@ public:
 /*
  * mesh handling
  */
-	void InitializeFromMesh( TriangleMesh * pMesh );
-	void UpdateDeformedMesh( TriangleMesh * pMesh, bool bRigid );
+	void SetMesh(
+		Deform2D_Vector2* vertices,
+		unsigned int vertexCount,
+		unsigned int* faces,
+		unsigned int faceCount
+	);
 
+	void GetDeformedMesh(
+		Deform2D_Vector2* vertices,
+		unsigned int vertexCount,
+		bool isRigid
+	);
 
 /*
  * debug

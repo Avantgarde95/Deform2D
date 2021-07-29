@@ -1,4 +1,5 @@
-﻿  Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+  Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt
   fg_callbacks.c
   fg_cursor.c
   fg_display.c
@@ -47,4 +48,4 @@ D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_window_mswin.c(85,86): wa
 D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_window_mswin.c(730,71): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pRegisterTouchWindow'(으)로의 변환입니다.
   xparsegeometry_repl.c
   코드를 생성하고 있습니다...
-  freeglut_static.vcxproj -> D:\Projects\Deform2D\third\freeglut-3.2.1\build\lib\Release\freeglut_static.lib
+  freeglut_static.vcxproj -> D:\Projects\Deform2D\dist\Release\freeglut_static.lib

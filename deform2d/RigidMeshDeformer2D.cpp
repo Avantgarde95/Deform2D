@@ -51,38 +51,36 @@ void RigidMeshDeformer2D::UnTransformPoint( Wml::Vector2f & vTransform )
 
 }
 
-
-
-void RigidMeshDeformer2D::InitializeFromMesh( TriangleMesh * pMesh )
-{
+void rmsmesh::RigidMeshDeformer2D::SetMesh(
+	Deform2D_Vector2* vertices,
+	unsigned int vertexCount,
+	unsigned int* faces,
+	unsigned int faceCount
+) {
 	m_vConstraints.clear();
 	m_vInitialVerts.resize(0);
 	m_vDeformedVerts.resize(0);
 	m_vTriangles.resize(0);
 
 	// copy vertices
-	unsigned int nVerts = pMesh->GetNumVertices();
-	for ( unsigned int i = 0; i < nVerts; ++i ) {
-		Wml::Vector3f vVertex;
-		pMesh->GetVertex(i, vVertex);
-
+	for ( unsigned int i = 0; i < vertexCount; ++i ) {
 		Vertex v;
-		v.vPosition = Wml::Vector2f( vVertex.X(), vVertex.Y() );
+		v.vPosition = Wml::Vector2f( vertices[i].x, vertices[i].y );
 		m_vInitialVerts.push_back( v );
 		m_vDeformedVerts.push_back( v );
 	}
 
 	// copy triangles
-	unsigned int nTris = pMesh->GetNumTriangles();
-	for ( unsigned int i = 0; i < nTris; ++i ) {
+	for ( unsigned int i = 0; i < faceCount; ++i ) {
 		Triangle t;
-		pMesh->GetTriangle(i, t.nVerts );
+		t.nVerts[0] = faces[i * 3];
+		t.nVerts[1] = faces[i * 3 + 1];
+		t.nVerts[2] = faces[i * 3 + 2];
 		m_vTriangles.push_back(t);
 	}
 
-
 	// set up triangle-local coordinate systems
-	for ( unsigned int i = 0; i < nTris; ++i ) {
+	for ( unsigned int i = 0; i < faceCount; ++i ) {
 		Triangle & t = m_vTriangles[i];
 		
 		for ( int j = 0; j < 3; ++j ) {
@@ -114,23 +112,24 @@ void RigidMeshDeformer2D::InitializeFromMesh( TriangleMesh * pMesh )
 			t.vTriCoords[j] = Wml::Vector2f(fX,fY);
 		}
 	}
+
 }
 
-
-void RigidMeshDeformer2D::UpdateDeformedMesh( TriangleMesh * pMesh, bool bRigid )
-{
-	ValidateDeformedMesh(bRigid);
+void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
+	Deform2D_Vector2* vertices,
+	unsigned int vertexCount,
+	bool isRigid
+) {
+	ValidateDeformedMesh(isRigid);
 
 	std::vector<Vertex> & vVerts = (m_vConstraints.size() > 1) ? m_vDeformedVerts : m_vInitialVerts;
 
-	unsigned int nVerts = pMesh->GetNumVertices();
-	for ( unsigned int i = 0; i < nVerts; ++i ) {
-		Wml::Vector2f vNewPos( vVerts[i].vPosition );
-		pMesh->SetVertex( i, Wml::Vector3f( vNewPos.X(), vNewPos.Y(), 0.0f ) );
+	for (unsigned int i = 0; i < vertexCount; ++i) {
+		Wml::Vector2f vNewPos(vVerts[i].vPosition);
+		vertices[i].x = vNewPos.X();
+		vertices[i].y = vNewPos.Y();
 	}
 }
-
-
 
 void RigidMeshDeformer2D::UpdateConstraint( Constraint & cons )
 {

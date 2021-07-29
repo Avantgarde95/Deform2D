@@ -5,3 +5,8 @@
 #else
 #define DEFORM2D_EXPORT __declspec(dllimport)
 #endif
+
+struct Deform2D_Vector2 {
+	float x;
+	float y;
+};
