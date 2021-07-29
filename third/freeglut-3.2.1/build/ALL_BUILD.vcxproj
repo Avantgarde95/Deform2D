@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4E142432-8B8C-32AB-A25B-3BAA40F335F3}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Projects\Deform2D\third\freeglut-3.2.1\src;D:\Projects\Deform2D\third\freeglut-3.2.1\include;D:\Projects\Deform2D\third\freeglut-3.2.1\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Projects\Deform2D\third\freeglut-3.2.1\src;D:\Projects\Deform2D\third\freeglut-3.2.1\include;D:\Projects\Deform2D\third\freeglut-3.2.1\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Projects\Deform2D\third\freeglut-3.2.1\src;D:\Projects\Deform2D\third\freeglut-3.2.1\include;D:\Projects\Deform2D\third\freeglut-3.2.1\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Projects\Deform2D\third\freeglut-3.2.1\src;D:\Projects\Deform2D\third\freeglut-3.2.1\include;D:\Projects\Deform2D\third\freeglut-3.2.1\build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Projects\Deform2D\third\freeglut-3.2.1\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Programs\CMake\bin\cmake.exe -SD:/Projects/Deform2D/third/freeglut-3.2.1 -BD:/Projects/Deform2D/third/freeglut-3.2.1/build --check-stamp-file D:/Projects/Deform2D/third/freeglut-3.2.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Programs\CMake\share\cmake-3.20\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCXXInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeGenericSystem.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakePackageConfigHelpers.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeRCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckFunctionExists.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFile.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFileCXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFiles.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckTypeSize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindOpenGL.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageMessage.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\GNUInstallDirs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\WriteBasicConfigVersionFile.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\FreeGLUTConfig.cmake.in;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCXXCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeRCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeSystem.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\config.h.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.pc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.rc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\src\fg_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Programs\CMake\bin\cmake.exe -SD:/Projects/Deform2D/third/freeglut-3.2.1 -BD:/Projects/Deform2D/third/freeglut-3.2.1/build --check-stamp-file D:/Projects/Deform2D/third/freeglut-3.2.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Programs\CMake\share\cmake-3.20\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCXXInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeGenericSystem.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakePackageConfigHelpers.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeRCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckFunctionExists.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFile.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFileCXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFiles.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckTypeSize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindOpenGL.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageMessage.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\GNUInstallDirs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\WriteBasicConfigVersionFile.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\FreeGLUTConfig.cmake.in;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCXXCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeRCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeSystem.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\config.h.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.pc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.rc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\src\fg_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Programs\CMake\bin\cmake.exe -SD:/Projects/Deform2D/third/freeglut-3.2.1 -BD:/Projects/Deform2D/third/freeglut-3.2.1/build --check-stamp-file D:/Projects/Deform2D/third/freeglut-3.2.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Programs\CMake\share\cmake-3.20\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCXXInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeGenericSystem.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakePackageConfigHelpers.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeRCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckFunctionExists.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFile.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFileCXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFiles.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckTypeSize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindOpenGL.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageMessage.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\GNUInstallDirs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\WriteBasicConfigVersionFile.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\FreeGLUTConfig.cmake.in;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCXXCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeRCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeSystem.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\config.h.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.pc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.rc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\src\fg_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Programs\CMake\bin\cmake.exe -SD:/Projects/Deform2D/third/freeglut-3.2.1 -BD:/Projects/Deform2D/third/freeglut-3.2.1/build --check-stamp-file D:/Projects/Deform2D/third/freeglut-3.2.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Programs\CMake\share\cmake-3.20\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCXXInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeGenericSystem.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakePackageConfigHelpers.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeRCInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckFunctionExists.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFile.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFileCXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckIncludeFiles.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\CheckTypeSize.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindOpenGL.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\FindPackageMessage.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\GNUInstallDirs.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\Windows.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake;D:\Programs\CMake\share\cmake-3.20\Modules\WriteBasicConfigVersionFile.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\FreeGLUTConfig.cmake.in;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeCXXCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeRCCompiler.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\3.20.4\CMakeSystem.cmake;D:\Projects\Deform2D\third\freeglut-3.2.1\config.h.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.pc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\freeglut.rc.in;D:\Projects\Deform2D\third\freeglut-3.2.1\src\fg_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Projects\Deform2D\third\freeglut-3.2.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\ZERO_CHECK.vcxproj">
+      <Project>{44ED2CE3-DE27-3CDC-9049-DB2E65027913}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\CallbackMaker.vcxproj">
+      <Project>{1B98B883-1477-3A82-BFA6-A32E095E5909}</Project>
+      <Name>CallbackMaker</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\CallbackMaker_static.vcxproj">
+      <Project>{6252DF0C-9686-3DFA-83A8-D74F508AED98}</Project>
+      <Name>CallbackMaker_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Fractals.vcxproj">
+      <Project>{63F2EB8C-3C96-3291-8B48-19F0EB3BC951}</Project>
+      <Name>Fractals</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Fractals_random.vcxproj">
+      <Project>{7AB4820A-3976-3BA0-BE01-234213F48BF7}</Project>
+      <Name>Fractals_random</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Fractals_random_static.vcxproj">
+      <Project>{D811DC02-9FA3-3B6A-9164-4DAB5BC7A554}</Project>
+      <Name>Fractals_random_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Fractals_static.vcxproj">
+      <Project>{D620DEEB-7504-3FF7-9D01-E11F920B6871}</Project>
+      <Name>Fractals_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Lorenz.vcxproj">
+      <Project>{6CA2410E-30CE-32BE-B96F-3DDBF888AC0C}</Project>
+      <Name>Lorenz</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Lorenz_static.vcxproj">
+      <Project>{AA228102-84DF-360B-8B92-9675D50AEA50}</Project>
+      <Name>Lorenz_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\One.vcxproj">
+      <Project>{9F5DBF48-A54B-3281-9C63-370A46BE4C0E}</Project>
+      <Name>One</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\One_static.vcxproj">
+      <Project>{9A124891-3B9C-3900-8CA8-EEFF50F162C5}</Project>
+      <Name>One_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Resizer.vcxproj">
+      <Project>{125438E2-6EB4-3FA5-AC13-D38202C2F37D}</Project>
+      <Name>Resizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\Resizer_static.vcxproj">
+      <Project>{B8B32ECC-A26B-31B7-850E-36EEADF71892}</Project>
+      <Name>Resizer_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\freeglut.vcxproj">
+      <Project>{64A10B9A-85AA-3366-8425-D9B1C7FB5918}</Project>
+      <Name>freeglut</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\freeglut_static.vcxproj">
+      <Project>{D5F29034-85B5-3B3D-B660-875A06045C8F}</Project>
+      <Name>freeglut_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\multi-touch.vcxproj">
+      <Project>{38CA14D4-D0C0-329E-A152-CB8DC5985FD5}</Project>
+      <Name>multi-touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\multi-touch_static.vcxproj">
+      <Project>{BE70857F-7830-385C-9F3F-C86EEE57BC43}</Project>
+      <Name>multi-touch_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\shapes.vcxproj">
+      <Project>{03D09C0A-A8C6-3A66-B271-679E1A0DD274}</Project>
+      <Name>shapes</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\shapes_static.vcxproj">
+      <Project>{BBEACC49-B977-360D-9F24-D8129A735A70}</Project>
+      <Name>shapes_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\smooth_opengl3.vcxproj">
+      <Project>{EA14F702-141E-3EA9-A19C-47F0BE273CE0}</Project>
+      <Name>smooth_opengl3</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\smooth_opengl3_static.vcxproj">
+      <Project>{BC37C4E2-6FA1-3C51-B642-A59BAC79C05E}</Project>
+      <Name>smooth_opengl3_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\subwin.vcxproj">
+      <Project>{D100D39F-474D-3F50-971F-3094FF9363E0}</Project>
+      <Name>subwin</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\subwin_static.vcxproj">
+      <Project>{C6190CD6-1B03-36CF-AF4B-17DBE67D5BA5}</Project>
+      <Name>subwin_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\timer.vcxproj">
+      <Project>{705FA270-2229-3453-B56C-D6E64DBBD4F6}</Project>
+      <Name>timer</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\timer_callback.vcxproj">
+      <Project>{1021F89C-2999-3D21-B768-124486A596B7}</Project>
+      <Name>timer_callback</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\timer_callback_static.vcxproj">
+      <Project>{B89E12F8-9B82-3C0D-B309-D10276F225E3}</Project>
+      <Name>timer_callback_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Projects\Deform2D\third\freeglut-3.2.1\build\timer_static.vcxproj">
+      <Project>{62A7B011-5021-3014-859E-B861EC5AF8B0}</Project>
+      <Name>timer_static</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,50 @@
+﻿  Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt
+  fg_callbacks.c
+  fg_cursor.c
+  fg_display.c
+  fg_ext.c
+  fg_font_data.c
+  fg_gamemode.c
+  fg_geometry.c
+  fg_gl2.c
+  fg_init.c
+  fg_input_devices.c
+  fg_joystick.c
+  fg_main.c
+  fg_misc.c
+  fg_overlay.c
+  fg_spaceball.c
+  fg_state.c
+  fg_stroke_mono_roman.c
+  fg_stroke_roman.c
+  fg_structure.c
+  fg_teapot.c
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\fg_teapot.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  fg_videoresize.c
+  fg_window.c
+  fg_font.c
+  fg_menu.c
+  fg_cursor_mswin.c
+  fg_display_mswin.c
+  fg_ext_mswin.c
+  fg_gamemode_mswin.c
+  fg_init_mswin.c
+  fg_input_devices_mswin.c
+  fg_joystick_mswin.c
+  fg_main_mswin.c
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_main_mswin.c(47,80): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pGetTouchInputInfo'(으)로의 변환입니다.
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_main_mswin.c(48,92): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pCloseTouchInputHandle'(으)로의 변환입니다.
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_main_mswin.c(1508,67): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pGetTouchInputInfo'(으)로의 변환입니다.
+  fg_menu_mswin.c
+  fg_spaceball_mswin.c
+  fg_state_mswin.c
+  fg_structure_mswin.c
+  fg_window_mswin.c
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_window_mswin.c(85,86): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pRegisterTouchWindow'(으)로의 변환입니다.
+  fgSetupPixelFormat(): there is still some work to do here!
+D:\Projects\Deform2D\third\freeglut-3.2.1\src\mswin\fg_window_mswin.c(730,71): warning C4312: '형식 캐스트': 'unsigned int'에서 더 큰 'pRegisterTouchWindow'(으)로의 변환입니다.
+  xparsegeometry_repl.c
+  코드를 생성하고 있습니다...
+  freeglut_static.vcxproj -> D:\Projects\Deform2D\third\freeglut-3.2.1\build\lib\Release\freeglut_static.lib
