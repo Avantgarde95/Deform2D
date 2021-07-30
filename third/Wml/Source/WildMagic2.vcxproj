@@ -127,32 +127,32 @@
     <_ProjectFileVersion>16.0.31401.40</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
     <IntDir>Debug\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
     <IntDir>Release\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
     <IntDir>DebugDLL\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
     <IntDir>ReleaseDLL\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
-    <OutDir>$(SolutionDir)dist\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)dist\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

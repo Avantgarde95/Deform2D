@@ -1,5 +1,4 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-  Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt
+﻿  Building Custom Rule D:/Projects/Deform2D/third/freeglut-3.2.1/CMakeLists.txt
   fg_callbacks.c
   fg_cursor.c
   fg_display.c
