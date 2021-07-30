@@ -4,7 +4,6 @@
 #include <map>
 #include <set>
 #include <limits>
-#include <WmlBox2.h>
 #include <WmlGMatrix.h>
 #include "WmlLinearSystemExt.h"
 #include "Common.h"
