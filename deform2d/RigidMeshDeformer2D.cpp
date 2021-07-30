@@ -20,7 +20,7 @@ void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2
 }
 
 void RigidMeshDeformer2D::RemoveHandle( unsigned int nHandle )
-{	
+{
 	Constraint c(nHandle, Wml::Vector2f::ZERO);
 	m_vConstraints.erase(c);
 	m_vDeformedVerts[nHandle].vPosition = m_vInitialVerts[nHandle].vPosition;
@@ -84,7 +84,7 @@ void rmsmesh::RigidMeshDeformer2D::SetMesh(
 	// set up triangle-local coordinate systems
 	for ( unsigned int i = 0; i < faceCount; ++i ) {
 		Triangle & t = m_vTriangles[i];
-		
+
 		for ( int j = 0; j < 3; ++j ) {
 			unsigned int n0 = j;
 			unsigned int n1 = (j+1)%3;
@@ -145,7 +145,7 @@ void RigidMeshDeformer2D::UpdateConstraint( Constraint & cons )
 		m_vConstraints.insert( cons );
 		m_vDeformedVerts[cons.nVertex].vPosition = cons.vConstrainedPos;
 		InvalidateSetup();
-	} 
+	}
 
 }
 
@@ -216,7 +216,7 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 	for ( unsigned int i = 0 ; i < nConstraints; ++i )
 		m_vVertexMap[vConstraintsVec[i].nVertex ] = nRow++;
 	if ( nRow != nVerts )	DebugBreak();		// bad!
-	
+
 
 	// test vector...
 	Wml::GVectord gUTestX( nVerts ), gUTestY(nVerts);
@@ -265,7 +265,7 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 			mHY[nA][nA] += 2;
 			mHY[nA][nB] += -2;
 			mHY[nB][nA] += -2;
-			mHY[nB][nB] += 2;			
+			mHY[nB][nB] += 2;
 		}
 	}
 
@@ -462,7 +462,7 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	size_t nTriangles = m_vTriangles.size();
 	for ( unsigned int i = 0; i < nTriangles; ++i ) {
 		Triangle & t = m_vTriangles[i];
-		
+
 //		_RMSInfo("Triangle %d: \n", i);
 		double fTriSumErr = 0;
 		for ( int j = 0; j < 3; ++j ) {
@@ -490,16 +490,16 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 			//	DebugBreak();
 			//DEBUG
 
-			//double dTest = 
-			//(1 - 2*x + (x*x) + (y*y))*pow(gUTest[n0x],2) + (1 - 2*x + (x*x) + (y*y))*pow(gUTest[n0y],2) + 
-			//	((x*x) + (y*y))*pow(gUTest[n1x],2) + ((x*x) + (y*y))*pow(gUTest[n1y],2) + 
-			//	pow(gUTest[n2x],2) + pow(gUTest[n2y],2) + gUTest[n1y]*(-2*y*gUTest[n2x] - 2*x*gUTest[n2y]) + 
-			//	gUTest[n0y]*(-2*y*gUTest[n1x] + (2*x - 2*(x*x) - 2*(y*y))*gUTest[n1y] + 2*y*gUTest[n2x] + 
+			//double dTest =
+			//(1 - 2*x + (x*x) + (y*y))*pow(gUTest[n0x],2) + (1 - 2*x + (x*x) + (y*y))*pow(gUTest[n0y],2) +
+			//	((x*x) + (y*y))*pow(gUTest[n1x],2) + ((x*x) + (y*y))*pow(gUTest[n1y],2) +
+			//	pow(gUTest[n2x],2) + pow(gUTest[n2y],2) + gUTest[n1y]*(-2*y*gUTest[n2x] - 2*x*gUTest[n2y]) +
+			//	gUTest[n0y]*(-2*y*gUTest[n1x] + (2*x - 2*(x*x) - 2*(y*y))*gUTest[n1y] + 2*y*gUTest[n2x] +
 			//	(-2 + 2*x)*gUTest[n2y]) + gUTest[n0x]*
-			//	((2*x - 2*(x*x) - 2*(y*y))*gUTest[n1x] + 2*y*gUTest[n1y] + (-2 + 2*x)*gUTest[n2x] - 
+			//	((2*x - 2*(x*x) - 2*(y*y))*gUTest[n1x] + 2*y*gUTest[n1y] + (-2 + 2*x)*gUTest[n2x] -
 			//	2*y*gUTest[n2y]) + gUTest[n1x]*(-2*x*gUTest[n2x] + 2*y*gUTest[n2y]);
 			//_RMSInfo("TEST IS %f %f\n", dTest, fDist);
-			
+
 			// n0x,n?? elems
 			m_mFirstMatrix[n0x][n0x] += 1 - 2*x + x*x + y*y;
 			m_mFirstMatrix[n0x][n1x] += 2*x - 2*x*x - 2*y*y;		//m_mFirstMatrix[n1x][n0x] += 2*x - 2*x*x - 2*y*y;
@@ -760,8 +760,8 @@ void RigidMeshDeformer2D::UpdateScaledTriangle( unsigned int nTriangle )
 	const Wml::Vector2f & vDeformedV0 = m_vDeformedVerts[ t.nVerts[0] ].vPosition;
 	const Wml::Vector2f & vDeformedV1 = m_vDeformedVerts[ t.nVerts[1] ].vPosition;
 	const Wml::Vector2f & vDeformedV2 = m_vDeformedVerts[ t.nVerts[2] ].vPosition;
-	double tmp[6] = { vDeformedV0.X(), vDeformedV0.Y(), 
-					  vDeformedV1.X(), vDeformedV1.Y(), 
+	double tmp[6] = { vDeformedV0.X(), vDeformedV0.Y(),
+					  vDeformedV1.X(), vDeformedV1.Y(),
 					  vDeformedV2.X(), vDeformedV2.Y() };
 	Wml::GVectord vDeformed( 6, tmp );
 	Wml::GVectord mCVec = t.mC * vDeformed;
@@ -818,7 +818,7 @@ void RigidMeshDeformer2D::ValidateDeformedMesh( bool bRigid )
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
 		Constraint c(i, Wml::Vector2f::ZERO);
 		if ( m_vConstraints.find(c) != m_vConstraints.end() )
-			continue;		
+			continue;
 		int nRow = m_vVertexMap[i];
 
 		double fX = vU[ 2*nRow ];
