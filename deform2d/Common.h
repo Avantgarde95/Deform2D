@@ -6,7 +6,8 @@
 #define DEFORM2D_API __declspec(dllimport)
 #endif
 
-struct Deform2D_Vector2 {
+struct Deform2D_Vector3 {
 	float x;
 	float y;
+	float z;
 };

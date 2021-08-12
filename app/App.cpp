@@ -100,8 +100,8 @@ Wml::Vector2f WorldToView( const Wml::Vector2f & vPoint )
 
 void InitializeDeformedMesh()
 {
-	std::vector<Deform2D_Vector2> verticesToSubmit;
-	std::vector<unsigned int> facesToSubmit;
+	std::vector<Deform2D_Vector3> verticesToSubmit;
+	std::vector<int> facesToSubmit;
 
 	m_deformedMesh.Clear();
 
@@ -111,7 +111,7 @@ void InitializeDeformedMesh()
 		m_mesh.GetVertex(i, vVertex);
 		m_deformedMesh.AppendVertexData(vVertex);
 
-		verticesToSubmit.push_back({ vVertex.X(), vVertex.Y() });
+		verticesToSubmit.push_back({ vVertex.X(), vVertex.Y(), 0.0f });
 	}
 
 	unsigned int nTris = m_mesh.GetNumTriangles();
@@ -137,7 +137,7 @@ void UpdateDeformedMesh()
 	ValidateConstraints();
 	//m_deformer.UpdateDeformedMesh( &m_deformedMesh, true );
 
-	std::vector<Deform2D_Vector2> deformedVertices(m_deformedMesh.GetVertexCount());
+	std::vector<Deform2D_Vector3> deformedVertices(m_deformedMesh.GetVertexCount());
 	std::vector<int> deformedFaces(m_deformedMesh.GetTriangleCount() * 3);
 
 	Deform2D_GetDeformedMesh(m_deformer, deformedVertices.data(), deformedVertices.size(), true);
@@ -146,7 +146,7 @@ void UpdateDeformedMesh()
 		m_deformedMesh.SetVertex(i, {
 			deformedVertices[i].x,
 			deformedVertices[i].y,
-			0.0f
+			deformedVertices[i].z
 		});
 	}
 }
@@ -169,7 +169,7 @@ void ValidateConstraints()
 		unsigned int nVertex = *cur++;
 		Wml::Vector3f vVertex;
 		m_deformedMesh.GetVertex( nVertex, vVertex);
-		Deform2D_Vector2 vertexToSubmit = { vVertex.X(), vVertex.Y() };
+		Deform2D_Vector3 vertexToSubmit = { vVertex.X(), vVertex.Y(), 0.0f };
 		Deform2D_SetDeformedHandle(m_deformer, nVertex, &vertexToSubmit);
 	}
 

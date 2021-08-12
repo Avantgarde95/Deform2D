@@ -29,23 +29,23 @@ public:
 	//const Wml::Vector2f & GetDeformedHandle( unsigned int nHandle );
 
 	//! nHandle is vertex ID
-	void SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2* vHandle );
+	void SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector3* vHandle );
 
 	//void TransformPoint( Wml::Vector2f & vTransform );
-	void UnTransformPoint( Deform2D_Vector2 & vTransform );
+	void UnTransformPoint( Deform2D_Vector3 & vTransform );
 
 /*
  * mesh handling
  */
 	void SetMesh(
-		Deform2D_Vector2* vertices,
+		Deform2D_Vector3* vertices,
 		unsigned int vertexCount,
 		unsigned int* faces,
 		unsigned int faceCount
 	);
 
 	void GetDeformedMesh(
-		Deform2D_Vector2* vertices,
+		Deform2D_Vector3* vertices,
 		unsigned int vertexCount,
 		bool isRigid
 	);

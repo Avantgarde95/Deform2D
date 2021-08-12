@@ -13,7 +13,7 @@ RigidMeshDeformer2D::RigidMeshDeformer2D()
 	InvalidateSetup();
 }
 
-void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector2* vHandle )
+void RigidMeshDeformer2D::SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector3* vHandle )
 {
 	Constraint c(nHandle, { vHandle->x, vHandle->y });
 	UpdateConstraint(c);
@@ -28,7 +28,7 @@ void RigidMeshDeformer2D::RemoveHandle( unsigned int nHandle )
 }
 
 
-void RigidMeshDeformer2D::UnTransformPoint( Deform2D_Vector2& vTransform )
+void RigidMeshDeformer2D::UnTransformPoint( Deform2D_Vector3& vTransform )
 {
 	// find triangle
 	size_t nTris = m_vTriangles.size();
@@ -54,7 +54,7 @@ void RigidMeshDeformer2D::UnTransformPoint( Deform2D_Vector2& vTransform )
 }
 
 void rmsmesh::RigidMeshDeformer2D::SetMesh(
-	Deform2D_Vector2* vertices,
+	Deform2D_Vector3* vertices,
 	unsigned int vertexCount,
 	unsigned int* faces,
 	unsigned int faceCount
@@ -118,7 +118,7 @@ void rmsmesh::RigidMeshDeformer2D::SetMesh(
 }
 
 void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
-	Deform2D_Vector2* vertices,
+	Deform2D_Vector3* vertices,
 	unsigned int vertexCount,
 	bool isRigid
 ) {

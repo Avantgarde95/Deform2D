@@ -22,33 +22,35 @@ void Deform2D_ForceValidation(
 
 void Deform2D_SetDeformedHandle(
 	void* deformer,
-	unsigned int handleIndex,
-	const Deform2D_Vector2* handle
+	int handleIndex,
+	const Deform2D_Vector3* handle
 ) {
 	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->SetDeformedHandle(handleIndex, handle);
 }
 
 void Deform2D_RemoveHandle(
 	void* deformer,
-	unsigned int handleIndex
+	int handleIndex
 ) {
 	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->RemoveHandle(handleIndex);
 }
 
 void Deform2D_SetMesh(
 	void* deformer,
-	Deform2D_Vector2* vertices,
-	unsigned int vertexCount,
-	unsigned int* faces,
-	unsigned int faceCount
+	Deform2D_Vector3* vertices,
+	int vertexCount,
+	int* faces,
+	int faceCount
 ) {
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->SetMesh(vertices, vertexCount, faces, faceCount);
+	// sizeof(signed) and sizeof(unsigned) are equal, so we can cast int* -> unsigned int* safely.
+	// https://stackoverflow.com/questions/13169451/do-i-have-the-guarantee-that-sizeoftype-sizeofunsigned-type?rq=1
+	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->SetMesh(vertices, vertexCount, (unsigned int*)faces, faceCount);
 }
 
 void Deform2D_GetDeformedMesh(
 	void* deformer,
-	Deform2D_Vector2* vertices,
-	unsigned int vertexCount,
+	Deform2D_Vector3* vertices,
+	int vertexCount,
 	bool isRigid
 ) {
 	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->GetDeformedMesh(vertices, vertexCount, isRigid);

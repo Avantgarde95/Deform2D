@@ -15,27 +15,27 @@ extern "C" {
 
 	DEFORM2D_API void Deform2D_SetDeformedHandle(
 		void* deformer,
-		unsigned int handleIndex,
-		const Deform2D_Vector2* handle
+		int handleIndex,
+		const Deform2D_Vector3* handle
 	);
 
 	DEFORM2D_API void Deform2D_RemoveHandle(
 		void* deformer,
-		unsigned int handleIndex
+		int handleIndex
 	);
 
 	DEFORM2D_API void Deform2D_SetMesh(
 		void* deformer,
-		Deform2D_Vector2* vertices,
-		unsigned int vertexCount,
-		unsigned int* faces,
-		unsigned int faceCount
+		Deform2D_Vector3* vertices,
+		int vertexCount,
+		int* faces,
+		int faceCount
 	);
 
 	DEFORM2D_API void Deform2D_GetDeformedMesh(
 		void* deformer,
-		Deform2D_Vector2* vertices,
-		unsigned int vertexCount,
+		Deform2D_Vector3* vertices,
+		int vertexCount,
 		bool isRigid
 	);
 }
