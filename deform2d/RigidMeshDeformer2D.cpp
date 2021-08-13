@@ -24,7 +24,7 @@ static int getDuration(const Time& time1, const Time& time2) {
 
 static void printDuration(const std::string& name, const Time& time1, const Time& time2) {
 	std::stringstream ss;
-	ss << std::fixed << "[" << name << "] " << getDuration(time1, time2) / 1000000.0f << "s" << std::endl;
+	ss << std::fixed << name << ": " << getDuration(time1, time2) / 1000000.0f << "s" << std::endl;
 	std::cout << ss.str();
 }
 
@@ -446,12 +446,16 @@ void RigidMeshDeformer2D::ApplyFittingStep()
 
 void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 {
+	auto putStart = getTime();
 	// put constraints into vector (will be useful)
 	std::vector<Constraint> vConstraintsVec;
 	std::set<Constraint>::iterator cur(m_vConstraints.begin()), end(m_vConstraints.end());
 	while ( cur != end )
 		vConstraintsVec.push_back( *cur++ );
+	auto putEnd = getTime();
+	printDuration("-- Put constraints", putStart, putEnd);
 
+	auto resizeStart = getTime();
 	// resize matrix and clear to zero
 	unsigned int nVerts = (unsigned int)m_vDeformedVerts.size();
 	m_mFirstMatrix.SetSize( 2*nVerts, 2*nVerts);
@@ -462,6 +466,10 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	size_t nConstraints = vConstraintsVec.size();
 	unsigned int nFreeVerts = nVerts - nConstraints;
 
+	auto resizeEnd = getTime();
+	printDuration("-- Resize & clear matrix", resizeStart, resizeEnd);
+
+	auto orderingStart = getTime();
 	// figure out vertex ordering. first do free vertices, then constraints
 	unsigned int nRow = 0;
 	m_vVertexMap.resize(nVerts);
@@ -475,8 +483,10 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	for ( unsigned int i = 0 ; i < nConstraints; ++i )
 		m_vVertexMap[vConstraintsVec[i].nVertex ] = nRow++;
 	if ( nRow != nVerts )	DebugBreak();		// bad!
+	auto orderingEnd = getTime();
+	printDuration("-- Figure out vertex ordering", orderingStart, orderingEnd);
 
-
+	auto testStart = getTime();
 	// test vector...
 	Wml::GVectord gUTest( nVerts * 2 );
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
@@ -492,8 +502,10 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 		gUTest[2*nRow] = vConstraintsVec[i].vConstrainedPos.X();
 		gUTest[2*nRow+1] = vConstraintsVec[i].vConstrainedPos.Y();
 	}
+	auto testEnd = getTime();
+	printDuration("-- Test vector", testStart, testEnd);
 
-
+	auto fillStart = getTime();
 	// ok, now fill matrix (?)
 	size_t nTriangles = m_vTriangles.size();
 	for ( unsigned int i = 0; i < nTriangles; ++i ) {
@@ -593,11 +605,16 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 		//_RMSInfo("  Total Error: %f\n", fTriSumErr);
 	}
 
+	auto fillEnd = getTime();
+	printDuration("-- Fill matrix", fillStart, fillEnd);
 
+	auto residualStart = getTime();
 	// test...
 	Wml::GVectord gUTemp = m_mFirstMatrix * gUTest;
 	double fSum = gUTemp.Dot( gUTest );
 	_RMSInfo("    (test) Residual is %f\n", fSum);
+	auto residualEnd = getTime();
+	printDuration("-- Residual", residualStart, residualEnd);
 
 /*
 	// just try printing out matrix...
@@ -621,6 +638,7 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	_RMSInfo("\n\n");
 */
 
+	auto extractStart = getTime();
 	// extract G00 matrix
 	Wml::GMatrixd mG00( 2*nFreeVerts, 2*nFreeVerts );
 	ExtractSubMatrix( m_mFirstMatrix, 0, 0, mG00 );
@@ -630,22 +648,34 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	ExtractSubMatrix( m_mFirstMatrix, 0, 2*nFreeVerts, mG01 );
 	Wml::GMatrixd mG10( 2 * (int)nConstraints, 2 * (int)nFreeVerts );
 	ExtractSubMatrix( m_mFirstMatrix, 2*nFreeVerts, 0, mG10 );
+	auto extractEnd = getTime();
+	printDuration("-- Extract G01 and G10", extractStart, extractEnd);
 
+	auto gPrimeStart = getTime();
 	// ok, now compute GPrime = G00 + Transpose(G00) and B = G01 + Transpose(G10)
 	Wml::GMatrixd mGPrime = mG00 + mG00.Transpose();
 	Wml::GMatrixd mB = mG01 + mG10.Transpose();
+	auto gPrimeEnd = getTime();
+	printDuration("-- Compute GPrime", gPrimeStart, gPrimeEnd);
 
+	std::cout << "mGPrime: " << mGPrime.GetRows() << " rows, " << mGPrime.GetColumns() << " columns" << std::endl;
+	auto invertGPrimeStart = getTime();
 	// ok, now invert GPrime
 	Wml::GMatrixd mGPrimeInverse( mGPrime.GetRows(), mGPrime.GetColumns() );
 	bool bInverted = Wml::LinearSystemd::Inverse( mGPrime, mGPrimeInverse );
 	if (!bInverted)
 		DebugBreak();
+	auto invertGPrimeEnd = getTime();
+	printDuration("-- Invert GPrime", invertGPrimeStart, invertGPrimeEnd);
 
+	auto finalStart = getTime();
 	// now compute -GPrimeInverse * B
 	Wml::GMatrixd mFinal = mGPrimeInverse * mB;
 	mFinal *= -1;
 
 	m_mFirstMatrix = mFinal;		// [RMS: not efficient!]
+	auto finalEnd = getTime();
+	printDuration("-- Compute mFinal", finalStart, finalEnd);
 }
 
 
