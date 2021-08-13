@@ -5,8 +5,28 @@
 #include "WmlExtTriangleUtils.h"
 #include "rmsdebug.h"
 
+#include <chrono>
+#include <iostream>
+#include <string>
+#include <sstream>
+
 using namespace rmsmesh;
 
+using Time = std::chrono::steady_clock::time_point;
+
+static Time getTime() {
+	return std::chrono::steady_clock::now();
+}
+
+static int getDuration(const Time& time1, const Time& time2) {
+	return std::chrono::duration_cast<std::chrono::microseconds>(time2 - time1).count();
+}
+
+static void printDuration(const std::string& name, const Time& time1, const Time& time2) {
+	std::stringstream ss;
+	ss << std::fixed << "[" << name << "] " << getDuration(time1, time2) / 1000000.0f << "s" << std::endl;
+	std::cout << ss.str();
+}
 
 RigidMeshDeformer2D::RigidMeshDeformer2D()
 {
@@ -59,6 +79,8 @@ void rmsmesh::RigidMeshDeformer2D::SetMesh(
 	unsigned int* faces,
 	unsigned int faceCount
 ) {
+	auto setMeshStart = getTime();
+
 	m_vConstraints.clear();
 	m_vInitialVerts.resize(0);
 	m_vDeformedVerts.resize(0);
@@ -115,6 +137,8 @@ void rmsmesh::RigidMeshDeformer2D::SetMesh(
 		}
 	}
 
+	auto setMeshEnd = getTime();
+	printDuration("SetMesh", setMeshStart, setMeshEnd);
 }
 
 void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
@@ -122,7 +146,10 @@ void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
 	unsigned int vertexCount,
 	bool isRigid
 ) {
+	auto validateStart = getTime();
 	ValidateDeformedMesh(isRigid);
+	auto validateEnd = getTime();
+	printDuration("ValidateDeformedMesh", validateStart, validateEnd);
 
 	std::vector<Vertex> & vVerts = (m_vConstraints.size() > 1) ? m_vDeformedVerts : m_vInitialVerts;
 
@@ -172,14 +199,23 @@ void RigidMeshDeformer2D::ValidateSetup()
 
 	_RMSInfo("Computing matrices for mesh with %d verts....this might take a while...\n", m_vInitialVerts.size() );
 
+	auto orientationStart = getTime();
 	PrecomputeOrientationMatrix();
+	auto orientationEnd = getTime();
+	printDuration("PrecomputeOrientationMatrix", orientationStart, orientationEnd);
 
+	auto scalingStart = getTime();
 	// ok, now scale triangles
 	size_t nTris = m_vTriangles.size();
 	for ( unsigned int i = 0; i < nTris; ++i )
 		PrecomputeScalingMatrices(i);
+	auto scalingEnd = getTime();
+	printDuration("PrecomputeScalingMatrix", scalingStart, scalingEnd);
 
+	auto fittingStart = getTime();
 	PrecomputeFittingMatrices();
+	auto fittingEnd = getTime();;
+	printDuration("PrecomputeFittingMatrix", fittingStart, fittingEnd);
 
 	_RMSInfo("Done!\n" );
 
