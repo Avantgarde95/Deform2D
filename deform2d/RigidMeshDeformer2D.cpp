@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <omp.h>
 
 static constexpr bool measureDuration = true;
 
@@ -259,17 +258,24 @@ void RigidMeshDeformer2D::ValidateSetup()
 
 void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 {
+	auto putConstraintsStart = getTime();
 	// put constraints into vector (will be useful)
 	std::vector<Constraint> vConstraintsVec;
 	std::set<Constraint>::iterator cur(m_vConstraints.begin()), end(m_vConstraints.end());
 	while ( cur != end )
 		vConstraintsVec.push_back( *cur++ );
+	auto putConstraintsEnd = getTime();
+	printDuration("-- Put constraints", putConstraintsStart, putConstraintsEnd);
 
+	auto clearMatrixStart = getTime();
 	// resize matrix and clear to zero
 	unsigned int nVerts = (unsigned int)m_vDeformedVerts.size();
 	size_t nConstraints = vConstraintsVec.size();
 	unsigned int nFreeVerts = nVerts - nConstraints;
+	auto clearMatrixEnd = getTime();
+	printDuration("-- Resize & clear matrix", clearMatrixStart, clearMatrixEnd);
 
+	auto figureOrderingStart = getTime();
 	// figure out vertex ordering. first do free vertices, then constraints
 	unsigned int nRow = 0;
 	m_vVertexMap.resize(nVerts);
@@ -283,8 +289,10 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 	for ( unsigned int i = 0 ; i < nConstraints; ++i )
 		m_vVertexMap[vConstraintsVec[i].nVertex ] = nRow++;
 	if ( nRow != nVerts )	DebugBreak();		// bad!
+	auto figureOrderingEnd = getTime();
+	printDuration("-- Figure out vertex ordering", figureOrderingStart, figureOrderingEnd);
 
-
+	auto testStart = getTime();
 	// test vector...
 	Wml::GVectord gUTestX( nVerts ), gUTestY(nVerts);
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
@@ -300,15 +308,20 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 		gUTestX[nRow] = vConstraintsVec[i].vConstrainedPos.X();
 		gUTestY[nRow] = vConstraintsVec[i].vConstrainedPos.Y();
 	}
+	auto testEnd = getTime();
+	printDuration("-- Test vector", testStart, testEnd);
 
-
+	auto hyhxStart = getTime();
 	// make Hy and Hx matrices
 	Wml::GMatrixd mHX( nVerts, nVerts );
 	Wml::GMatrixd mHY( nVerts, nVerts );
 	for ( unsigned int i = 0; i < nVerts; ++i )
 		for ( unsigned int j = 0; j < nVerts; ++j )
 			mHX(i,j) = mHY(i,j) = 0.0;
+	auto hyhxEnd = getTime();
+	printDuration("-- Make Hy and Hx", hyhxStart, hyhxEnd);
 
+	auto fillStart = getTime();
 	// ok, now fill matrix
 	size_t nTriangles = m_vTriangles.size();
 	for ( unsigned int i = 0; i < nTriangles; ++i ) {
@@ -335,7 +348,10 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 			mHY[nB][nB] += 2;
 		}
 	}
+	auto fillEnd = getTime();
+	printDuration("-- Fill matrix", fillStart, fillEnd);
 
+	auto extractStart = getTime();
 	// extract HX00 and  HY00 matrices
 	Wml::GMatrixd mHX00( (int)nFreeVerts, (int)nFreeVerts );
 	Wml::GMatrixd mHY00( (int)nFreeVerts, (int)nFreeVerts );
@@ -365,7 +381,10 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 	//Wml::GMatrixd mDY = mHY01 + mHY10.Transpose();
 	m_mDX = mHX01;
 	m_mDY = mHY01;
+	auto extractEnd = getTime();
+	printDuration("-- Extract matrices", extractStart, extractEnd);
 
+	auto luStart = getTime();
 	// pre-compute LU decompositions
 	bool bResult = Wml::LinearSystemExtd::LUDecompose( m_mHXPrime, m_mLUDecompX );
 	if (!bResult)
@@ -373,7 +392,8 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 	bResult = Wml::LinearSystemExtd::LUDecompose( m_mHYPrime, m_mLUDecompY );
 	if (!bResult)
 		DebugBreak();
-
+	auto luEnd = getTime();
+	printDuration("-- LU decompositions", luStart, luEnd);
 }
 
 
@@ -713,7 +733,6 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	int bWidth = mB.GetColumns();
 	m_mFirstMatrix.SetSize(dimension, bWidth);
 
-#pragma omp parallel for
 	for (int y = 0; y < dimension; y++) {
 		for (int x = 0; x < bWidth; x++) {
 			double result = 0;
