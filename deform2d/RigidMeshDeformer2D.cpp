@@ -2,6 +2,7 @@
 
 #include <WmlLinearSystem.h>
 #include <WmlMatrix4.h>
+#include <Eigen/Eigen>
 #include "WmlExtTriangleUtils.h"
 #include "rmsdebug.h"
 
@@ -9,24 +10,54 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <omp.h>
+
+static constexpr bool measureDuration = true;
 
 using namespace rmsmesh;
 
 using Time = std::chrono::steady_clock::time_point;
 
 static Time getTime() {
-	return std::chrono::steady_clock::now();
+	if (measureDuration) {
+		return std::chrono::steady_clock::now();
+	}
+	else {
+		// Do nothing.
+	}
 }
 
 static int getDuration(const Time& time1, const Time& time2) {
-	return std::chrono::duration_cast<std::chrono::microseconds>(time2 - time1).count();
+	if (measureDuration) {
+		return std::chrono::duration_cast<std::chrono::microseconds>(time2 - time1).count();
+	}
+	else {
+		// Do nothing.
+	}
 }
 
 static void printDuration(const std::string& name, const Time& time1, const Time& time2) {
-	std::stringstream ss;
-	ss << std::fixed << name << ": " << getDuration(time1, time2) / 1000000.0f << "s" << std::endl;
-	std::cout << ss.str();
+	if (measureDuration) {
+		std::stringstream ss;
+		ss << std::fixed << name << ": " << getDuration(time1, time2) / 1000000.0f << "s" << std::endl;
+		std::cout << ss.str();
+	}
+	else {
+		// Do nothing.
+	}
 }
+
+class GMatrixdView : public Wml::GMatrixd {
+public:
+	GMatrixdView(int iRows, int iCols, const double* afEntry) {
+		m_afData = 0;
+		m_aafEntry = 0;
+        m_iRows = iRows;
+        m_iCols = iCols;
+        m_iQuantity = m_iRows*m_iCols;
+		m_afData = const_cast<double*>(afEntry);
+	}
+};
 
 RigidMeshDeformer2D::RigidMeshDeformer2D()
 {
@@ -661,19 +692,44 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	std::cout << "mGPrime: " << mGPrime.GetRows() << " rows, " << mGPrime.GetColumns() << " columns" << std::endl;
 	auto invertGPrimeStart = getTime();
 	// ok, now invert GPrime
-	Wml::GMatrixd mGPrimeInverse( mGPrime.GetRows(), mGPrime.GetColumns() );
+	int dimension = mGPrime.GetRows();
+	double* mGPrimeData = mGPrime;
+	Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> mGPrime_eigen(mGPrimeData, dimension, dimension);
+	auto mGPrimeNegatedInverse_eigen = (-(mGPrime_eigen.inverse())).eval();
+	auto mGPrimeNegatedInverseData = mGPrimeNegatedInverse_eigen.data();
+	//GMatrixdView mGPrimeNegatedInverse( mGPrime.GetRows(), mGPrime.GetColumns(), mGPrimeNegatedInverse_eigen.data() );
+
+	/*
 	bool bInverted = Wml::LinearSystemd::Inverse( mGPrime, mGPrimeInverse );
 	if (!bInverted)
 		DebugBreak();
+	*/
 	auto invertGPrimeEnd = getTime();
 	printDuration("-- Invert GPrime", invertGPrimeStart, invertGPrimeEnd);
 
 	auto finalStart = getTime();
 	// now compute -GPrimeInverse * B
-	Wml::GMatrixd mFinal = mGPrimeInverse * mB;
-	mFinal *= -1;
 
-	m_mFirstMatrix = mFinal;		// [RMS: not efficient!]
+	int bWidth = mB.GetColumns();
+	m_mFirstMatrix.SetSize(dimension, bWidth);
+
+#pragma omp parallel for
+	for (int y = 0; y < dimension; y++) {
+		for (int x = 0; x < bWidth; x++) {
+			double result = 0;
+
+			for (int k = 0; k < dimension; k++) {
+				result += mGPrimeNegatedInverseData[y * dimension + k] * mB[k][x];
+			}
+
+			m_mFirstMatrix[y][x] = result;
+		}
+	}
+
+	//Wml::GMatrixd mFinal = mGPrimeInverse * mB;
+	//mFinal *= -1;
+
+	//m_mFirstMatrix = mGPrimeNegatedInverse * mB;		// [RMS: not efficient!]
 	auto finalEnd = getTime();
 	printDuration("-- Compute mFinal", finalStart, finalEnd);
 }
