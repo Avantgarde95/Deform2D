@@ -46,18 +46,6 @@ static void printDuration(const std::string& name, const Time& time1, const Time
 	}
 }
 
-class GMatrixdView : public Wml::GMatrixd {
-public:
-	GMatrixdView(int iRows, int iCols, const double* afEntry) {
-		m_afData = 0;
-		m_aafEntry = 0;
-        m_iRows = iRows;
-        m_iCols = iCols;
-        m_iQuantity = m_iRows*m_iCols;
-		m_afData = const_cast<double*>(afEntry);
-	}
-};
-
 RigidMeshDeformer2D::RigidMeshDeformer2D()
 {
 	InvalidateSetup();

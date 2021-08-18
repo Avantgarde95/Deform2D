@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 
 #include <Deform2D.h>
+#include <SimpleMathTest.h>
 
 #include "TriangleMesh.h"
 
@@ -344,6 +345,9 @@ void OnReshape( int width, int height )
 
 int main(int argc, char ** argv)
 {
+	testSimpleMath1();
+	testSimpleMath2();
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	glutInitWindowPosition(120,260);
