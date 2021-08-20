@@ -10,7 +10,7 @@
 
 rmsmesh::TriangleMesh m_mesh;
 float m_bounds[6];
-Wml::Vector2f m_vTranslate;
+Eigen::Vector2f m_vTranslate;
 float m_fScale;
 rmsmesh::TriangleMesh m_deformedMesh;
 
@@ -45,8 +45,8 @@ void MakeSquareMesh()
 		for ( unsigned int xi = 0; xi < nRowLen; ++xi ) {
 			float fX = -1.0f + (float)xi * fXStep;
 
-			Wml::Vector3f vVert(fX,fY,0);
-			m_mesh.AppendVertexData( vVert );
+			Eigen::Vector3f vVert { {fX,fY,0} };
+			m_mesh.AppendVertex( vVert );
 		}
 	}
 
@@ -77,8 +77,8 @@ void UpdateScale()
 	float fViewCenterY = (float)m_nViewport[3] / 2;
 
 	m_mesh.GetBoundingBox( m_bounds );
-	m_vTranslate.X() = fViewCenterX  -  0.5f * ( m_bounds[0] + m_bounds[1] );
-	m_vTranslate.Y() = fViewCenterY  -  0.5f * ( m_bounds[2] + m_bounds[3] );
+	m_vTranslate.x() = fViewCenterX  -  0.5f * ( m_bounds[0] + m_bounds[1] );
+	m_vTranslate.y() = fViewCenterY  -  0.5f * ( m_bounds[2] + m_bounds[3] );
 
 	float fWidth = m_bounds[1] - m_bounds[0];
 	float fHeight = m_bounds[3] - m_bounds[2];
@@ -87,11 +87,11 @@ void UpdateScale()
 
 	m_fScale = 0.5f * (fSizeView / fSizeObject);
 }
-Wml::Vector2f ViewToWorld( const Wml::Vector2f & vPoint )
+Eigen::Vector2f ViewToWorld( const Eigen::Vector2f & vPoint )
 {
 	return (vPoint - m_vTranslate) / m_fScale;
 }
-Wml::Vector2f WorldToView( const Wml::Vector2f & vPoint )
+Eigen::Vector2f WorldToView( const Eigen::Vector2f & vPoint )
 {
 	return ( vPoint * m_fScale ) + m_vTranslate;
 }
@@ -108,11 +108,11 @@ void InitializeDeformedMesh()
 
 	unsigned int nVerts = m_mesh.GetNumVertices();
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
-		Wml::Vector3f vVertex;
+		Eigen::Vector3f vVertex;
 		m_mesh.GetVertex(i, vVertex);
-		m_deformedMesh.AppendVertexData(vVertex);
+		m_deformedMesh.AppendVertex(vVertex);
 
-		verticesToSubmit.push_back({ vVertex.X(), vVertex.Y(), 0.0f });
+		verticesToSubmit.push_back({ vVertex.x(), vVertex.y(), 0.0f });
 	}
 
 	unsigned int nTris = m_mesh.GetNumTriangles();
@@ -168,9 +168,9 @@ void ValidateConstraints()
 	std::set<unsigned int>::iterator cur(m_vSelected.begin()), end(m_vSelected.end());
 	while ( cur != end ) {
 		unsigned int nVertex = *cur++;
-		Wml::Vector3f vVertex;
+		Eigen::Vector3f vVertex;
 		m_deformedMesh.GetVertex( nVertex, vVertex);
-		Deform2D_Vector3 vertexToSubmit = { vVertex.X(), vVertex.Y(), 0.0f };
+		Deform2D_Vector3 vertexToSubmit = { vVertex.x(), vVertex.y(), 0.0f };
 		Deform2D_SetDeformedHandle(m_deformer, nVertex, &vertexToSubmit);
 	}
 
@@ -187,11 +187,11 @@ unsigned int FindHitVertex( float nX, float nY )
 	unsigned int nVerts = m_deformedMesh.GetNumVertices();
 	for ( unsigned int i = 0; i < nVerts; ++i ) {
 
-		Wml::Vector3f vVertex;
+		Eigen::Vector3f vVertex;
 		m_deformedMesh.GetVertex(i, vVertex);
-		Wml::Vector2f vView = WorldToView( Wml::Vector2f(vVertex.X(), vVertex.Y()) );
-		float fX = vView.X();
-		float fY = vView.Y();
+		Eigen::Vector2f vView = WorldToView( Eigen::Vector2f(vVertex.x(), vVertex.y()) );
+		float fX = vView.x();
+		float fY = vView.y();
 
 		double fDist = sqrt(
 			(double)((nX - fX)*(nX - fX) + (nY-fY)*(nY-fY) ));
@@ -229,7 +229,7 @@ void OnMouseClick(int button, int state, int x, int y)
 				Deform2D_RemoveHandle(m_deformer, nHit);
 
 				// restore position
-				Wml::Vector3f vVertex;
+				Eigen::Vector3f vVertex;
 				m_mesh.GetVertex(nHit,vVertex);
 				m_deformedMesh.SetVertex(nHit, vVertex);
 			}
@@ -247,9 +247,9 @@ void OnMouseClick(int button, int state, int x, int y)
 void OnMouseMove(int x, int y)
 {
 	if ( m_nSelected != std::numeric_limits<unsigned int>::max() ) {
-		Wml::Vector2f vNewPosView( (float)x, (float)(m_nViewport[3] - 1 - y) );
-		Wml::Vector2f vNewPosWorld = ViewToWorld( vNewPosView );
-		Wml::Vector3f vNewPos( vNewPosWorld.X(), vNewPosWorld.Y(), 0.0f );
+		Eigen::Vector2f vNewPosView( (float)x, (float)(m_nViewport[3] - 1 - y) );
+		Eigen::Vector2f vNewPosWorld = ViewToWorld( vNewPosView );
+		Eigen::Vector3f vNewPos( vNewPosWorld.x(), vNewPosWorld.y(), 0.0f );
 		m_deformedMesh.SetVertex( m_nSelected, vNewPos );
 		InvalidateConstraints();
 		glutPostRedisplay();
@@ -286,7 +286,7 @@ void OnRender()
 
 	UpdateScale();
 	glLoadIdentity();
-	glTranslatef(m_vTranslate.X(), m_vTranslate.Y(), 0.0f);
+	glTranslatef(m_vTranslate.x(), m_vTranslate.y(), 0.0f);
 	glScalef(m_fScale, m_fScale, 1.0f);
 
 	glLineWidth(2.0f);
@@ -294,13 +294,13 @@ void OnRender()
 
 	unsigned int nTris = m_deformedMesh.GetNumTriangles();
 	for ( unsigned int i = 0; i < nTris; ++i ) {
-		Wml::Vector3f vVerts[3];
+		Eigen::Vector3f vVerts[3];
 		m_deformedMesh.GetTriangle(i, vVerts);
 
 		glBegin(GL_LINE_LOOP);
-		glVertex3fv( vVerts[0] );
-		glVertex3fv( vVerts[1] );
-		glVertex3fv( vVerts[2] );
+		glVertex3fv( vVerts[0].data() );
+		glVertex3fv( vVerts[1].data() );
+		glVertex3fv( vVerts[2].data() );
 		glEnd();
 	}
 
@@ -311,15 +311,15 @@ void OnRender()
 	while ( cur != end ) {
 		unsigned int nSelected = *cur++;
 
-		Wml::Vector3f vSelected;
+		Eigen::Vector3f vSelected;
 		m_deformedMesh.GetVertex( nSelected, vSelected );
-		Wml::Vector2f vView = WorldToView( Wml::Vector2f(vSelected.X(),vSelected.Y()) );
+		Eigen::Vector2f vView = WorldToView( Eigen::Vector2f(vSelected.x(),vSelected.y()) );
 
 		glBegin(GL_QUADS);
-		glVertex2f( vView.X() - 5, vView.Y() - 5 );
-		glVertex2f( vView.X() + 5, vView.Y() - 5 );
-		glVertex2f( vView.X() + 5, vView.Y() + 5 );
-		glVertex2f( vView.X() - 5, vView.Y() + 5 );
+		glVertex2f( vView.x() - 5, vView.y() - 5 );
+		glVertex2f( vView.x() + 5, vView.y() - 5 );
+		glVertex2f( vView.x() + 5, vView.y() + 5 );
+		glVertex2f( vView.x() - 5, vView.y() + 5 );
 		glEnd();
 	}
 

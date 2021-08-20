@@ -1,12 +1,13 @@
 #ifndef __RMSIMPLICIT_RIGID_MESH_DEFORMER_2D_H__
 #define __RMSIMPLICIT_RIGID_MESH_DEFORMER_2D_H__
 
+#include <Eigen/Eigen>
+
+#include "Common.h"
+
 #include <map>
 #include <set>
 #include <limits>
-#include <WmlGMatrix.h>
-#include "WmlLinearSystemExt.h"
-#include "Common.h"
 
 namespace rmsmesh {
 
@@ -25,13 +26,13 @@ public:
  */
 	//unsigned int GetNumHandles();
 
-	//const Wml::Vector2f & GetInitialHandle(unsigned int nHandle); 
-	//const Wml::Vector2f & GetDeformedHandle( unsigned int nHandle );
+	//const Eigen::Vector2f & GetInitialHandle(unsigned int nHandle); 
+	//const Eigen::Vector2f & GetDeformedHandle( unsigned int nHandle );
 
 	//! nHandle is vertex ID
 	void SetDeformedHandle( unsigned int nHandle, const Deform2D_Vector3* vHandle );
 
-	//void TransformPoint( Wml::Vector2f & vTransform );
+	//void TransformPoint( Eigen::Vector2f & vTransform );
 	void UnTransformPoint( Deform2D_Vector3 & vTransform );
 
 /*
@@ -53,11 +54,11 @@ public:
 /*
  * debug
  */
-	const Wml::Vector2f * GetTriangleVerts( unsigned int nTriangle ) { return m_vTriangles[nTriangle].vScaled; }
+	const Eigen::Vector2f* GetTriangleVerts( unsigned int nTriangle ) { return m_vTriangles[nTriangle].vScaled; }
 protected:
 
 	struct Vertex {
-		Wml::Vector2f vPosition;
+		Eigen::Vector2f vPosition;
 	};
 
 public:
@@ -65,13 +66,13 @@ public:
 		unsigned int nVerts[3];
 
 		// definition of each vertex in triangle-local coordinate system
-		Wml::Vector2f vTriCoords[3];
+		Eigen::Vector2f vTriCoords[3];
 
 		// un-scaled triangle
-		Wml::Vector2f vScaled[3];
+		Eigen::Vector2f vScaled[3];
 
 		// pre-computed matrices for triangle scaling step
-		Wml::GMatrixd mF, mC;
+		Eigen::MatrixXd mF, mC;
 	};
 
 protected:
@@ -83,10 +84,10 @@ protected:
 
 	struct Constraint {
 		unsigned int nVertex;
-		Wml::Vector2f vConstrainedPos;
+		Eigen::Vector2f vConstrainedPos;
 
-		Constraint() { nVertex = 0; vConstrainedPos = Wml::Vector2f::ZERO; }
-		Constraint( unsigned int nVert, const Wml::Vector2f & vPos ) { nVertex = nVert; vConstrainedPos = vPos; }
+		Constraint() { nVertex = 0; vConstrainedPos = { 0, 0 }; }
+		Constraint( unsigned int nVert, const Eigen::Vector2f & vPos ) { nVertex = nVert; vConstrainedPos = vPos; }
 
 		bool operator<(const Constraint & c2) const
 			{ return nVertex < c2.nVertex; }
@@ -101,12 +102,11 @@ protected:
 	void ValidateSetup();
 
 
-	Wml::GMatrixd m_mFirstMatrix;
+	Eigen::MatrixXd m_mFirstMatrix;
 	std::vector<unsigned int> m_vVertexMap;
-	Wml::GMatrixd m_mHXPrime, m_mHYPrime;
-	Wml::GMatrixd m_mDX, m_mDY;
-
-	Wml::LinearSystemExtd::LUData m_mLUDecompX, m_mLUDecompY;
+	Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
+	Eigen::FullPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
+	Eigen::MatrixXd m_mDX, m_mDY;
 
 	void PrecomputeOrientationMatrix();
 	void PrecomputeScalingMatrices( unsigned int nTriangle );
@@ -116,8 +116,8 @@ protected:
 	void UpdateScaledTriangle( unsigned int nTriangle );
 	void ApplyFittingStep();
 
-	Wml::Vector2f GetInitialVert( unsigned int nVert ) 
-	  { return Wml::Vector2f( m_vInitialVerts[ nVert ].vPosition.X(), m_vInitialVerts[ nVert ].vPosition.Y() ); }
+	Eigen::Vector2f GetInitialVert( unsigned int nVert ) 
+	  { return Eigen::Vector2f( m_vInitialVerts[ nVert ].vPosition.x(), m_vInitialVerts[ nVert ].vPosition.y() ); }
 };
 
 

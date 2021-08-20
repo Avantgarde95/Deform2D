@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 #include <float.h>
-#include <WmlVector2.h>
-#include <WmlVector3.h>
+
+#include <Eigen/Eigen>
 
 #define TM_VERTEX_STRIDE 4    // normal and color same as vertex
 #define TM_TEXTURE_STRIDE 2
@@ -58,10 +58,10 @@ public:
 /*
  *  IMesh interface
  */
-	virtual VertexID AppendVertex( const Wml::Vector3f & vVertex, const Wml::Vector3f * pNormal = NULL )
+	virtual VertexID AppendVertex( const Eigen::Vector3f & vVertex, const Eigen::Vector3f * pNormal = NULL )
 		{ return AppendVertexData( &vVertex, pNormal, false, NULL, &vVertex ); }
-	virtual void GetVertex( VertexID vID, Wml::Vector3f & vVertex, Wml::Vector3f * pNormal = NULL ) const;
-	virtual void GetNormal( VertexID vID, Wml::Vector3f & vNormal ) const;	
+	virtual void GetVertex( VertexID vID, Eigen::Vector3f & vVertex, Eigen::Vector3f * pNormal = NULL ) const;
+	virtual void GetNormal( VertexID vID, Eigen::Vector3f & vNormal ) const;	
 	virtual unsigned int GetVertexCount() const
 		{ return (unsigned int)tm_vertices.size() / TM_VERTEX_STRIDE; }
 	virtual unsigned int GetMaxVertexID() const
@@ -74,7 +74,7 @@ public:
 		{ unsigned int nTri[3]; nTri[0] = v1; nTri[1] = v2; nTri[2] = v3; SetTriangle(tID, nTri); return true; }
 
 	virtual void GetTriangle( TriangleID tID, VertexID vTriangle[3]  ) const;
-	virtual void GetTriangle( TriangleID tID, Wml::Vector3f vTriangle[3], Wml::Vector3f * pNormals = NULL  ) const;
+	virtual void GetTriangle( TriangleID tID, Eigen::Vector3f vTriangle[3], Eigen::Vector3f * pNormals = NULL  ) const;
 	virtual unsigned int GetTriangleCount() const
 		{ return (unsigned int)tm_triangles.size() / TM_TRIANGLE_STRIDE; }
 	virtual unsigned int GetMaxTriangleID() const
@@ -127,8 +127,8 @@ public:
 					 float * color = NULL, float * texture_coord = NULL);
 
 	unsigned int
-	AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector3f * pNormal, bool bFlipNormal, 
-					  const Wml::Vector2f * pTextureCoord = NULL, const Wml::Vector3f * pColor = NULL );
+	AppendVertexData( const Eigen::Vector3f * pVertex, const Eigen::Vector3f * pNormal, bool bFlipNormal, 
+					  const Eigen::Vector2f * pTextureCoord = NULL, const Eigen::Vector3f * pColor = NULL );
 
 	unsigned int
 	AppendTriangleData(unsigned int * triangle);
@@ -174,18 +174,18 @@ public:
 	unsigned int GetNumTriangles() const 
 		{ return (unsigned int)tm_triangles.size() / TM_TRIANGLE_STRIDE; }
 
-//	void GetVertex( unsigned int nVertex, Wml::Vector3f & v ) const;
-//	void GetNormal( unsigned int nVertex, Wml::Vector3f & n ) const;
-	void GetTextureCoords( unsigned int nVertex, Wml::Vector2f & vt ) const;
+//	void GetVertex( unsigned int nVertex, Eigen::Vector3f & v ) const;
+//	void GetNormal( unsigned int nVertex, Eigen::Vector3f & n ) const;
+	void GetTextureCoords( unsigned int nVertex, Eigen::Vector2f & vt ) const;
 	//void GetTriangle( unsigned int nTriangle, unsigned int triangle[3] ) const;
-//	void GetTriangle( unsigned int nTriangle, Wml::Vector3f * vVertices ) const;
-	void GetTextureCoords( unsigned int nTriangle, Wml::Vector2f * vCoords ) const;
-	void GetTriangleNormals( unsigned int nTriangle, Wml::Vector3f * vNormals );
-	void GetTriTexCoords( unsigned int nTriangle, Wml::Vector2f & uv1, Wml::Vector2f & uv2, Wml::Vector2f & uv3 ) const;
+//	void GetTriangle( unsigned int nTriangle, Eigen::Vector3f * vVertices ) const;
+	void GetTextureCoords( unsigned int nTriangle, Eigen::Vector2f * vCoords ) const;
+	void GetTriangleNormals( unsigned int nTriangle, Eigen::Vector3f * vNormals );
+	void GetTriTexCoords( unsigned int nTriangle, Eigen::Vector2f & uv1, Eigen::Vector2f & uv2, Eigen::Vector2f & uv3 ) const;
 
 	void SetTriangle( unsigned int nTriangle, unsigned int triangle[3] );
-	void SetVertex( unsigned int nVertex, const Wml::Vector3f & vVertex );
-	void SetNormal( unsigned int nVertex, const Wml::Vector3f & vNormal );
+	void SetVertex( unsigned int nVertex, const Eigen::Vector3f & vVertex );
+	void SetNormal( unsigned int nVertex, const Eigen::Vector3f & vNormal );
 
 	// erase triangles in the bitmap
 	void EraseTriangles( const std::vector<bool> & vErase);

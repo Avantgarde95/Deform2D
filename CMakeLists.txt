@@ -12,16 +12,13 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}
 option(FREEGLUT_BUILD_DEMOS OFF)
 add_subdirectory(third/freeglut-3.2.1)
 
-add_subdirectory(third/Wml)
-
 file(GLOB_RECURSE Deform2D_sources Deform2D/*.cpp)
 file(GLOB_RECURSE Deform2D_headers Deform2D/*.h)
 add_library(Deform2D SHARED ${Deform2D_sources})
-target_include_directories(Deform2D PRIVATE third/Wml/Include third/eigen)
-target_link_libraries(Deform2D WildMagic)
+target_include_directories(Deform2D PRIVATE third/eigen)
 
 file(GLOB_RECURSE App_sources App/*.cpp)
 file(GLOB_RECURSE App_headers App/*.h)
 add_executable(App ${App_sources})
-target_include_directories(App PRIVATE Deform2D third/Wml/Include third/freeglut-3.2.1/include)
-target_link_libraries(App WildMagic Deform2D ${OPENGL_LIBRARY} freeglut_static)
+target_include_directories(App PRIVATE Deform2D third/eigen third/freeglut-3.2.1/include)
+target_link_libraries(App Deform2D ${OPENGL_LIBRARY} freeglut_static)

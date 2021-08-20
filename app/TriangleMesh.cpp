@@ -43,20 +43,20 @@ TriangleMesh::~TriangleMesh()
 }
 
 
-void TriangleMesh::GetVertex( VertexID vID, Wml::Vector3f & vVertex, Wml::Vector3f * pNormal ) const
+void TriangleMesh::GetVertex( VertexID vID, Eigen::Vector3f & vVertex, Eigen::Vector3f * pNormal ) const
 {
-	vVertex.X() = tm_vertices[ vID * TM_VERTEX_STRIDE ];
-	vVertex.Y() = tm_vertices[ vID * TM_VERTEX_STRIDE + 1];
-	vVertex.Z() = tm_vertices[ vID * TM_VERTEX_STRIDE + 2];
+	vVertex.x() = tm_vertices[ vID * TM_VERTEX_STRIDE ];
+	vVertex.y() = tm_vertices[ vID * TM_VERTEX_STRIDE + 1];
+	vVertex.z() = tm_vertices[ vID * TM_VERTEX_STRIDE + 2];
 	if ( pNormal ) {
-		pNormal->X() = tm_normals[ vID * TM_VERTEX_STRIDE ];
-		pNormal->Y() = tm_normals[ vID * TM_VERTEX_STRIDE + 1];
-		pNormal->Z() = tm_normals[ vID * TM_VERTEX_STRIDE + 2];
+		pNormal->x() = tm_normals[ vID * TM_VERTEX_STRIDE ];
+		pNormal->y() = tm_normals[ vID * TM_VERTEX_STRIDE + 1];
+		pNormal->z() = tm_normals[ vID * TM_VERTEX_STRIDE + 2];
 	}
 }
 
 
-void TriangleMesh::GetTriangle( TriangleID tID, Wml::Vector3f vTriangle[3], Wml::Vector3f * pNormals  ) const
+void TriangleMesh::GetTriangle( TriangleID tID, Eigen::Vector3f vTriangle[3], Eigen::Vector3f * pNormals  ) const
 {
 	GetVertex( tm_triangles[tID * TM_TRIANGLE_STRIDE], vTriangle[0] );
 	GetVertex( tm_triangles[tID * TM_TRIANGLE_STRIDE + 1], vTriangle[1] );
@@ -241,8 +241,8 @@ TriangleMesh::AppendVertexData(float * vertex, float * normal,
 
 
 unsigned int
-TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector3f * pNormal,
-							    bool bFlipNormal, const Wml::Vector2f * pTextureCoord, const Wml::Vector3f * pColor )
+TriangleMesh::AppendVertexData( const Eigen::Vector3f * pVertex, const Eigen::Vector3f * pNormal,
+							    bool bFlipNormal, const Eigen::Vector2f * pTextureCoord, const Eigen::Vector3f * pColor )
 {
 #if TM_VERTEX_STRIDE != 4
 #error fix for different stride
@@ -252,9 +252,9 @@ TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector
   if(pVertex != NULL){
     vi = (unsigned int)tm_vertices.size();
     tm_vertices.resize(vi+TM_VERTEX_STRIDE);
-	tm_vertices[vi] = pVertex->X();
-	tm_vertices[vi+1] = pVertex->Y();
-	tm_vertices[vi+2] = pVertex->Z();
+	tm_vertices[vi] = pVertex->x();
+	tm_vertices[vi+1] = pVertex->y();
+	tm_vertices[vi+2] = pVertex->z();
 	tm_vertices[vi+3] = 1.0f;
     ret = vi / TM_VERTEX_STRIDE;
   }
@@ -262,18 +262,18 @@ TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector
     vi = (unsigned int)tm_normals.size();
     tm_normals.resize(vi+TM_VERTEX_STRIDE);
 	float fFlip = (bFlipNormal) ? -1.0f : 1.0f;
-	tm_normals[vi] = pNormal->X() * fFlip;
-	tm_normals[vi+1] = pNormal->Y() * fFlip;
-	tm_normals[vi+2] = pNormal->Z() * fFlip;
+	tm_normals[vi] = pNormal->x() * fFlip;
+	tm_normals[vi+1] = pNormal->y() * fFlip;
+	tm_normals[vi+2] = pNormal->z() * fFlip;
 	tm_normals[vi+3] = 1.0f;
     ret = vi / TM_VERTEX_STRIDE;
   }
   if(pColor != NULL){
     vi = (unsigned int)tm_colors.size();
     tm_colors.resize(vi+TM_VERTEX_STRIDE);
-	tm_colors[vi] = pColor->X();
-	tm_colors[vi+1] = pColor->Y();
-	tm_colors[vi+2] = pColor->Z();
+	tm_colors[vi] = pColor->x();
+	tm_colors[vi+1] = pColor->y();
+	tm_colors[vi+2] = pColor->z();
 	tm_colors[vi+3] = 1.0f;
     ret = vi / TM_VERTEX_STRIDE;
   }
@@ -281,8 +281,8 @@ TriangleMesh::AppendVertexData( const Wml::Vector3f * pVertex, const Wml::Vector
   if(pTextureCoord != NULL){
     unsigned int ti = (unsigned int)tm_texture_coords.size();
     tm_texture_coords.resize(ti+TM_TEXTURE_STRIDE);
-	tm_texture_coords[ti] = pTextureCoord->X();
-	tm_texture_coords[ti+1] = pTextureCoord->Y();
+	tm_texture_coords[ti] = pTextureCoord->x();
+	tm_texture_coords[ti+1] = pTextureCoord->y();
   }
 
   return ret;
@@ -304,24 +304,24 @@ TriangleMesh::AppendTriangleData(unsigned int * triangle)
 
 
 
-//void TriangleMesh::GetVertex( unsigned int nVertex, Wml::Vector3f & v ) const
+//void TriangleMesh::GetVertex( unsigned int nVertex, Eigen::Vector3f & v ) const
 //{
-//	v.X() = tm_vertices[ nVertex * TM_VERTEX_STRIDE ];
-//	v.Y() = tm_vertices[ nVertex * TM_VERTEX_STRIDE + 1];
-//	v.Z() = tm_vertices[ nVertex * TM_VERTEX_STRIDE + 2];
+//	v.x() = tm_vertices[ nVertex * TM_VERTEX_STRIDE ];
+//	v.y() = tm_vertices[ nVertex * TM_VERTEX_STRIDE + 1];
+//	v.z() = tm_vertices[ nVertex * TM_VERTEX_STRIDE + 2];
 //}
 
-void TriangleMesh::GetNormal( unsigned int nNormal, Wml::Vector3f & n ) const
+void TriangleMesh::GetNormal( unsigned int nNormal, Eigen::Vector3f & n ) const
 {
-	n.X() = tm_normals[ nNormal * TM_VERTEX_STRIDE ];
-	n.Y() = tm_normals[ nNormal * TM_VERTEX_STRIDE + 1];
-	n.Z() = tm_normals[ nNormal * TM_VERTEX_STRIDE + 2];
+	n.x() = tm_normals[ nNormal * TM_VERTEX_STRIDE ];
+	n.y() = tm_normals[ nNormal * TM_VERTEX_STRIDE + 1];
+	n.z() = tm_normals[ nNormal * TM_VERTEX_STRIDE + 2];
 }
 
-void TriangleMesh::GetTextureCoords( unsigned int nVertex, Wml::Vector2f & vt ) const
+void TriangleMesh::GetTextureCoords( unsigned int nVertex, Eigen::Vector2f & vt ) const
 {
-	vt.X() = tm_texture_coords[ nVertex * TM_TEXTURE_STRIDE ];
-	vt.Y() = tm_texture_coords[ nVertex * TM_TEXTURE_STRIDE + 1];
+	vt.x() = tm_texture_coords[ nVertex * TM_TEXTURE_STRIDE ];
+	vt.y() = tm_texture_coords[ nVertex * TM_TEXTURE_STRIDE + 1];
 }
 
 
@@ -330,33 +330,33 @@ void TriangleMesh::GetTriangle( unsigned int nTriangle, unsigned int triangle[3]
 	memcpy(triangle, & tm_triangles[ nTriangle * TM_TRIANGLE_STRIDE ], sizeof(unsigned int)*3 );
 }
 
-//void TriangleMesh::GetTriangle( unsigned int nTriangle, Wml::Vector3f * vVertices ) const
+//void TriangleMesh::GetTriangle( unsigned int nTriangle, Eigen::Vector3f * vVertices ) const
 //{
 //	GetVertex( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE], vVertices[0] );
 //	GetVertex( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 1], vVertices[1] );
 //	GetVertex( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 2], vVertices[2] );
 //}
 
-void TriangleMesh::GetTriangleNormals( unsigned int nTriangle, Wml::Vector3f * vNormals )
+void TriangleMesh::GetTriangleNormals( unsigned int nTriangle, Eigen::Vector3f * vNormals )
 {
 	GetNormal( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE], vNormals[0] );
 	GetNormal( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 1], vNormals[1] );
 	GetNormal( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 2], vNormals[2] );
 }
 
-void TriangleMesh::GetTextureCoords( unsigned int nTriangle, Wml::Vector2f * vCoords ) const
+void TriangleMesh::GetTextureCoords( unsigned int nTriangle, Eigen::Vector2f * vCoords ) const
 {
 	GetTextureCoords( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE], vCoords[0] );
 	GetTextureCoords( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 1], vCoords[1] );
 	GetTextureCoords( tm_triangles[nTriangle * TM_TRIANGLE_STRIDE + 2], vCoords[2] );
 }
 
-void TriangleMesh::GetTriTexCoords( unsigned int nTriangle, Wml::Vector2f & uv1, Wml::Vector2f & uv2, Wml::Vector2f & uv3 ) const
+void TriangleMesh::GetTriTexCoords( unsigned int nTriangle, Eigen::Vector2f & uv1, Eigen::Vector2f & uv2, Eigen::Vector2f & uv3 ) const
 {
 	unsigned int nOffset = TM_TRITEXCOORD_INDEX(nTriangle, 0);
-	uv1 = Wml::Vector2f( tm_triTexCoords[ nOffset   ], tm_triTexCoords[ nOffset+1 ] );
-	uv2 = Wml::Vector2f( tm_triTexCoords[ nOffset+2 ], tm_triTexCoords[ nOffset+3 ] );
-	uv3 = Wml::Vector2f( tm_triTexCoords[ nOffset+4 ], tm_triTexCoords[ nOffset+5 ] );
+	uv1 = Eigen::Vector2f( tm_triTexCoords[ nOffset   ], tm_triTexCoords[ nOffset+1 ] );
+	uv2 = Eigen::Vector2f( tm_triTexCoords[ nOffset+2 ], tm_triTexCoords[ nOffset+3 ] );
+	uv3 = Eigen::Vector2f( tm_triTexCoords[ nOffset+4 ], tm_triTexCoords[ nOffset+5 ] );
 }
 
 void TriangleMesh::SetTriangle( unsigned int nTriangle, unsigned int triangle[3] )
@@ -364,18 +364,18 @@ void TriangleMesh::SetTriangle( unsigned int nTriangle, unsigned int triangle[3]
 	memcpy(& tm_triangles[ nTriangle * TM_TRIANGLE_STRIDE ], triangle, sizeof(unsigned int)*3 );
 }
 
-void TriangleMesh::SetVertex( unsigned int nVertex, const Wml::Vector3f & vVertex )
+void TriangleMesh::SetVertex( unsigned int nVertex, const Eigen::Vector3f & vVertex )
 {
-	tm_vertices[ nVertex * TM_VERTEX_STRIDE ] = vVertex.X();
-	tm_vertices[ nVertex * TM_VERTEX_STRIDE + 1] = vVertex.Y();
-	tm_vertices[ nVertex * TM_VERTEX_STRIDE + 2] = vVertex.Z();
+	tm_vertices[ nVertex * TM_VERTEX_STRIDE ] = vVertex.x();
+	tm_vertices[ nVertex * TM_VERTEX_STRIDE + 1] = vVertex.y();
+	tm_vertices[ nVertex * TM_VERTEX_STRIDE + 2] = vVertex.z();
 }
 
-void TriangleMesh::SetNormal( unsigned int nVertex, const Wml::Vector3f & vNormal )
+void TriangleMesh::SetNormal( unsigned int nVertex, const Eigen::Vector3f & vNormal )
 {
-	tm_normals[ nVertex * TM_VERTEX_STRIDE ] = vNormal.X();
-	tm_normals[ nVertex * TM_VERTEX_STRIDE + 1] = vNormal.Y();
-	tm_normals[ nVertex * TM_VERTEX_STRIDE + 2] = vNormal.Z();
+	tm_normals[ nVertex * TM_VERTEX_STRIDE ] = vNormal.x();
+	tm_normals[ nVertex * TM_VERTEX_STRIDE + 1] = vNormal.y();
+	tm_normals[ nVertex * TM_VERTEX_STRIDE + 2] = vNormal.z();
 }
 
 
@@ -470,10 +470,10 @@ float TriangleMesh::GetMaxEdgeLength() const
 
 	unsigned int nTris = GetNumTriangles();
 	for (unsigned int i = 0; i < nTris; ++i) {
-		Wml::Vector3f vVertices[3];
+		Eigen::Vector3f vVertices[3];
 		GetTriangle(i, vVertices);
 		for ( int i = 0; i < 3; ++i ) {
-			float fLen = (vVertices[i] - vVertices[(i+1)%3]).SquaredLength();
+			float fLen = (vVertices[i] - vVertices[(i+1)%3]).squaredNorm();
 			if ( fLen > fMaxEdgeLength ) {
 				fMaxEdgeLength = fLen;
 			}
@@ -522,7 +522,7 @@ bool TriangleMesh::tm_readobj()
 
 	// need to save normals separately and then match to vertices (maya
 	//  "optimizes" the mesh...argh!)
-	std::vector<Wml::Vector3f> vNormals;
+	std::vector<Eigen::Vector3f> vNormals;
 
 	bool bHasNormals = false;
 
@@ -547,7 +547,7 @@ bool TriangleMesh::tm_readobj()
 				bHasNormals = true;
 				in >> fvec[2];
 				fvec.normalize();
-				vNormals.push_back( Wml::Vector3f( fvec[0], fvec[1], fvec[2] ) );
+				vNormals.push_back( Eigen::Vector3f( fvec[0], fvec[1], fvec[2] ) );
 				break;
 			case 't':
 //				AppendVertexData(NULL, NULL, NULL, fVec);
@@ -617,29 +617,29 @@ bool TriangleMesh::tm_writeobj()
 		bHaveVertexTexCoords = false;
 
 	unsigned int nVerts = GetNumVertices();
-	Wml::Vector3f vert, norm;
-	Wml::Vector2f tex;
+	Eigen::Vector3f vert, norm;
+	Eigen::Vector2f tex;
 	for (unsigned int i = 0; i < nVerts; ++i) {
 		GetVertex(i, vert);
 		GetNormal(i, norm);
-		out << "v " << vert.X() << " " << vert.Y() << " " << vert.Z() << endl;
-		out << "vn " << norm.X() << " " << norm.Y() << " " << norm.Z() << endl;
+		out << "v " << vert.x() << " " << vert.y() << " " << vert.z() << endl;
+		out << "vn " << norm.x() << " " << norm.y() << " " << norm.z() << endl;
 		if ( bHaveVertexTexCoords ) {
 			GetTextureCoords(i, tex);
-			out << "vt " << tex.X() << " " << tex.Y() << endl;
+			out << "vt " << tex.x() << " " << tex.y() << endl;
 		}
 	}
 
 	unsigned int nTris = GetNumTriangles();
 
 	if (bHaveTriangleTexCoords)  {
-		Wml::Vector2f vUV[3];
+		Eigen::Vector2f vUV[3];
 		for ( unsigned int i = 0; i < nTris; ++i ) {
 			GetTriTexCoords( i, vUV[0], vUV[1], vUV[2] );
 
-			out << "vt " << vUV[0].X() << " " << vUV[0].Y() << std::endl;
-			out << "vt " << vUV[1].X() << " " << vUV[1].Y() << std::endl;
-			out << "vt " << vUV[2].X() << " " << vUV[2].Y() << std::endl;
+			out << "vt " << vUV[0].x() << " " << vUV[0].y() << std::endl;
+			out << "vt " << vUV[1].x() << " " << vUV[1].y() << std::endl;
+			out << "vt " << vUV[2].x() << " " << vUV[2].y() << std::endl;
 		}
 	}
 
@@ -684,24 +684,24 @@ bool TriangleMesh::tm_writeMeshLite()
 	// normals??
 	out << nVerts << std::endl;
 
-	Wml::Vector3f norm;
+	Eigen::Vector3f norm;
 	for (unsigned int i = 0; i < nVerts; ++i) {
 		GetNormal(i, norm);
-		out << norm.X() << " " << norm.Y() << " " << norm.Z() << endl;
+		out << norm.x() << " " << norm.y() << " " << norm.z() << endl;
 	}
 
 
 	// start mesh
 	out << "StartMesh" << std::endl;
 
-	Wml::Vector3f vert;
-	Wml::Vector2f tex;
+	Eigen::Vector3f vert;
+	Eigen::Vector2f tex;
 	for (unsigned int i = 0; i < nVerts; ++i) {
 		GetVertex(i, vert);
-		out << "Vertex " << (i+1) << " " << vert.X() << " " << vert.Y() << " " << vert.Z() << std::endl;
+		out << "Vertex " << (i+1) << " " << vert.x() << " " << vert.y() << " " << vert.z() << std::endl;
 		//if ( bHaveTexCoords ) {
 		//	GetTextureCoords(i, tex);
-		//	out << "vt " << tex.X() << " " << tex.Y() << endl;
+		//	out << "vt " << tex.x() << " " << tex.y() << endl;
 		//}
 	}
 
