@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include "Deformer.h"
 
 extern "C" {
 	DEFORM2D_API void* Deform2D_CreateDeformer();

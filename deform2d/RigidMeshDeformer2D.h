@@ -105,7 +105,7 @@ protected:
 	Eigen::MatrixXd m_mFirstMatrix;
 	std::vector<unsigned int> m_vVertexMap;
 	Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
-	Eigen::FullPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
+	Eigen::PartialPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
 	Eigen::MatrixXd m_mDX, m_mDY;
 
 	void PrecomputeOrientationMatrix();

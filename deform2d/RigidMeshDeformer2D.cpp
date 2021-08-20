@@ -1,12 +1,12 @@
 #include "RigidMeshDeformer2D.h"
 
 #include <Eigen/Eigen>
-#include "rmsdebug.h"
 
 #include <chrono>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <stdexcept>
 
 static constexpr bool measureDuration = true;
 
@@ -81,6 +81,10 @@ static void Scale(Eigen::Vector2f& vTriV0,
 	vTriV0 -= vCentroid;	vTriV0 *= fScale;	vTriV0 += vCentroid;
 	vTriV1 -= vCentroid;	vTriV1 *= fScale;	vTriV1 += vCentroid;
 	vTriV2 -= vCentroid;	vTriV2 *= fScale;	vTriV2 += vCentroid;
+}
+
+static void DebugBreak() {
+	throw std::runtime_error("Error!");
 }
 
 RigidMeshDeformer2D::RigidMeshDeformer2D()
@@ -251,7 +255,7 @@ void RigidMeshDeformer2D::ValidateSetup()
 	if (m_bSetupValid || m_vConstraints.size() < 2)
 		return;
 
-	_RMSInfo("Computing matrices for mesh with %d verts....this might take a while...\n", m_vInitialVerts.size());
+	std::printf("Computing matrices for mesh with %d verts....this might take a while...\n", m_vInitialVerts.size());
 
 	auto orientationStart = getTime();
 	PrecomputeOrientationMatrix();
@@ -271,7 +275,7 @@ void RigidMeshDeformer2D::ValidateSetup()
 	auto fittingEnd = getTime();;
 	printDuration("PrecomputeFittingMatrix", fittingStart, fittingEnd);
 
-	_RMSInfo("Done!\n");
+	std::printf("Done!\n");
 
 
 	m_bSetupValid = true;
@@ -679,7 +683,7 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 	// test...
 	Eigen::VectorXd gUTemp = m_mFirstMatrix * gUTest;
 	double fSum = gUTemp.dot(gUTest);
-	_RMSInfo("    (test) Residual is %f\n", fSum);
+	std::printf("    (test) Residual is %f\n", fSum);
 	auto residualEnd = getTime();
 	printDuration("-- Residual", residualStart, residualEnd);
 
