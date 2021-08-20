@@ -1,5 +1,8 @@
 #include "LinearAlgebra.h"
 
+#include <cstdio>
+#include <cstring>
+
 using namespace rmsmesh;
 
 // Matrix Types 
@@ -241,7 +244,7 @@ string
 Matrix::toString() const
 {
 	char buf[256];
-    sprintf_s(buf, "[ %5.5f %5.5f %5.5f %5.5f]\n[ %5.5f %5.5f %5.5f %5.5f]\n[ %5.5f %5.5f %5.5f %5.5f]\n", 
+    std::sprintf(buf, "[ %5.5f %5.5f %5.5f %5.5f]\n[ %5.5f %5.5f %5.5f %5.5f]\n[ %5.5f %5.5f %5.5f %5.5f]\n", 
 			 m_elem[0][0], m_elem[0][1], m_elem[0][2], m_elem[0][3],
 			 m_elem[1][0], m_elem[1][1], m_elem[1][2], m_elem[1][3],
 			 m_elem[2][0], m_elem[2][1], m_elem[2][2], m_elem[2][3] );

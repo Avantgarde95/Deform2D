@@ -1,7 +1,8 @@
 #ifndef __RMS_LINEAR_ALGEBRA_HH__
 #define __RMS_LINEAR_ALGEBRA_HH__
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <strstream>
@@ -64,7 +65,7 @@ struct Vector {
 
 	inline string toString() const
 		{ char buf[256];
-		  sprintf_s(buf, "[ %5.5f %5.5f %5.5f %5.5f]", v[0], v[1], v[2], v[3]);
+            std::sprintf(buf, "[ %5.5f %5.5f %5.5f %5.5f]", v[0], v[1], v[2], v[3]);
 		  return string(buf); }
 
 	inline int equal(float const * with) const
@@ -151,7 +152,7 @@ struct Point {
 
 	inline string toString() const
 		{ char buf[256];
-		  sprintf_s(buf, "[ %5.5f %5.5f %5.5f %5.5f]", p[0], p[1], p[2], p[3]);
+            std::sprintf(buf, "[ %5.5f %5.5f %5.5f %5.5f]", p[0], p[1], p[2], p[3]);
 		  return string(buf); }
 
 	inline int equal(float const * with) const

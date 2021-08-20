@@ -1,5 +1,7 @@
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#endif
 
 #include "Deform2D.h"
 #include "RigidMeshDeformer2D.h"
@@ -56,6 +58,7 @@ void Deform2D_GetDeformedMesh(
 	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->GetDeformedMesh(vertices, vertexCount, isRigid);
 }
 
+#ifdef _WIN32
 BOOL APIENTRY DllMain
 (HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -71,3 +74,5 @@ BOOL APIENTRY DllMain
 
 	return TRUE;
 }
+#endif
+

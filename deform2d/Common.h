@@ -1,9 +1,15 @@
 #pragma once
 
-#ifdef DEFORM2D_EXPORTS
-#define DEFORM2D_API __declspec(dllexport)
+#ifdef _WIN32
+    #ifdef DEFORM2D_EXPORTS
+        #define DEFORM2D_API __declspec(dllexport)
+    #else
+        #define DEFORM2D_API __declspec(dllimport)
+    #endif
+#elif defined(__GNUC__)
+    #define DEFORM2D_API __attribute__((visibility("default")))
 #else
-#define DEFORM2D_API __declspec(dllimport)
+    #define DEFORM2D_API
 #endif
 
 struct Deform2D_Vector3 {
