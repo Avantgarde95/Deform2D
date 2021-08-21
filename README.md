@@ -5,9 +5,29 @@
 Fork of [Deform2D](https://www.dgp.toronto.edu/~rms/software/Deform2D/index.html) for studying 2D deformation.
 
 Differences from the original source code
-- Solution file is updated to Visual Studio 2019 version.
-- MFC (used for file dialog) dependency is removed, and the file dialog is replaced to console input (`std::cin`).
-- Supports .obj files which don't have the vertex normals. (i.e Faces can have `f number number number` form.)
+- Common
+  - Uses [CMake](https://cmake.org/) to build the code so you can build this in any platform.
+  - Replaced WildMagic2 to [Eigen](https://eigen.tuxfamily.org/).
+- Sample aspp
+  - MFC (used for file dialog) dependency is removed, and the file dialog is replaced to console input (`std::cin`).
+  - Supports .obj files which don't have the vertex normals. (i.e Faces can have `f number number number` form.)
+
+### How to build
+
+- Install [CMake](https://cmake.org/)
+- `cmake . -Bbuild_[platform] -DCMAKE_BUILD_TYPE=[type]`
+  - ex. `cmake . -Bbuild_linux -DCMAKE_BUILD_TYPE=Release`
+- To build the **Deform2D library**
+  - Move to `build_[platform]` and build the code
+  - In Windows: Open the Visual Studio solution and build Deform2D
+  - In Linux or Mac: `make Deform2D`
+- To build the **sample app**
+  - In Windows: Build App
+  - In Linux or Mac
+    - Install the required libraries (OpenGL)
+    - ex. In Linux, install `libgl1-mesa-dev`, `libglu1-mesa-dev`, and `libxi-dev`.
+  - Run `make`
+  - Run `./App`
 
 ### Original README
 
