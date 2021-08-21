@@ -93,10 +93,16 @@ RigidMeshDeformer2D::RigidMeshDeformer2D()
     InvalidateSetup();
 }
 
+static double testArray[] = { 1, 2, 3 };
+
 void RigidMeshDeformer2D::SetDeformedHandle(unsigned int nHandle, const Deform2D_Vector3* vHandle)
 {
     Constraint c(nHandle, { vHandle->x, vHandle->y });
     UpdateConstraint(c);
+
+    if (m_externalComputeFunction != nullptr) {
+        m_externalComputeFunction(testArray);
+    }
 }
 
 void RigidMeshDeformer2D::RemoveHandle(unsigned int nHandle)
