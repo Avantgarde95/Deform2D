@@ -682,6 +682,7 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
     auto fillEnd = getTime();
     printDuration("-- Fill matrix", fillStart, fillEnd);
 
+    /*
     auto residualStart = getTime();
     // test...
     Eigen::VectorXd gUTemp = m_mFirstMatrix * gUTest;
@@ -689,6 +690,7 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
     std::printf("    (test) Residual is %f\n", fSum);
     auto residualEnd = getTime();
     printDuration("-- Residual", residualStart, residualEnd);
+    */
 
     /*
         // just try printing out matrix...
@@ -728,15 +730,16 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
     auto gPrimeStart = getTime();
     // ok, now compute GPrime = G00 + Transpose(G00) and B = G01 + Transpose(G10)
     Eigen::MatrixXd mGPrime = mG00 + mG00.transpose();
-    Eigen::MatrixXd mB = mG01 + mG10.transpose();
+    //Eigen::MatrixXd mB = mG01 + mG10.transpose();
+    m_mB = mG01 + mG10.transpose();
     auto gPrimeEnd = getTime();
     printDuration("-- Compute GPrime", gPrimeStart, gPrimeEnd);
 
     std::cout << "mGPrime: " << mGPrime.rows() << " rows, " << mGPrime.cols() << " columns" << std::endl;
 
     auto finalStart = getTime();
-    m_mFirstMatrix = -mGPrime.inverse() * mB;
-    //m_mFirstMatrix = mGPrimeNegatedInverse * mB;		// [RMS: not efficient!]
+    m_mGPrimeSolver.compute(mGPrime);
+    //m_mFirstMatrix = -mGPrime.inverse() * m_mB;
     auto finalEnd = getTime();
     printDuration("-- Compute mFinal", finalStart, finalEnd);
 }
@@ -936,7 +939,7 @@ void RigidMeshDeformer2D::ValidateDeformedMesh(bool bRigid)
         ++k;
     }
 
-    Eigen::VectorXd vU = m_mFirstMatrix * vQ;
+    Eigen::VectorXd vU = m_mGPrimeSolver.solve(-m_mB * vQ);
     size_t nVerts = m_vDeformedVerts.size();
     for (unsigned int i = 0; i < nVerts; ++i) {
         Constraint c(i, { 0, 0 });

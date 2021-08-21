@@ -103,6 +103,8 @@ namespace rmsmesh {
 
         Eigen::MatrixXd m_mFirstMatrix;
         std::vector<unsigned int> m_vVertexMap;
+        Eigen::PartialPivLU<Eigen::MatrixXd> m_mGPrimeSolver;
+        Eigen::MatrixXd m_mB;
         Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
         Eigen::PartialPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
         Eigen::MatrixXd m_mDX, m_mDY;
