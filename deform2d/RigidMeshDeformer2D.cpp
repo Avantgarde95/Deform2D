@@ -8,8 +8,6 @@
 
 static constexpr bool measureDuration = true;
 
-using namespace rmsmesh;
-
 using Time = std::chrono::steady_clock::time_point;
 
 static Time getTime() {
@@ -133,7 +131,7 @@ void RigidMeshDeformer2D::UnTransformPoint(Deform2D_Vector3& vTransform)
 
 }
 
-void rmsmesh::RigidMeshDeformer2D::SetMesh(
+void RigidMeshDeformer2D::SetMesh(
     Deform2D_Vector3* vertices,
     unsigned int vertexCount,
     unsigned int* faces,
@@ -201,7 +199,7 @@ void rmsmesh::RigidMeshDeformer2D::SetMesh(
     printDuration("SetMesh", setMeshStart, setMeshEnd);
 }
 
-void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
+void RigidMeshDeformer2D::GetDeformedMesh(
     Deform2D_Vector3* vertices,
     unsigned int vertexCount,
     bool isRigid
@@ -218,6 +216,15 @@ void rmsmesh::RigidMeshDeformer2D::GetDeformedMesh(
         vertices[i].x = vNewPos.x();
         vertices[i].y = vNewPos.y();
     }
+}
+
+
+void RigidMeshDeformer2D::SetExternalSolver(
+    Deform2D_SolverComputeFunction computeFunction,
+    Deform2D_SolverSolveFunction solveFunction
+) {
+    m_externalComputeFunction = computeFunction;
+    m_externalSolveFunction = solveFunction;
 }
 
 void RigidMeshDeformer2D::UpdateConstraint(Constraint& cons)

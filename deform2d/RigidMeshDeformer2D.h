@@ -8,118 +8,121 @@
 #include <set>
 #include <limits>
 
-namespace rmsmesh {
-
-    class RigidMeshDeformer2D {
-    public:
-        RigidMeshDeformer2D();
-        ~RigidMeshDeformer2D() {};
+class RigidMeshDeformer2D {
+public:
+    RigidMeshDeformer2D();
+    ~RigidMeshDeformer2D() {};
 
 
-        void ForceValidation() { ValidateSetup(); }
-        void RemoveHandle(unsigned int nHandle);
+    void ForceValidation() { ValidateSetup(); }
+    void RemoveHandle(unsigned int nHandle);
 
-        /*
-         * interface stuff
-         */
-         //unsigned int GetNumHandles();
+    /*
+     * interface stuff
+     */
+     //unsigned int GetNumHandles();
 
-         //const Eigen::Vector2f & GetInitialHandle(unsigned int nHandle);
-         //const Eigen::Vector2f & GetDeformedHandle( unsigned int nHandle );
+     //const Eigen::Vector2f & GetInitialHandle(unsigned int nHandle);
+     //const Eigen::Vector2f & GetDeformedHandle( unsigned int nHandle );
 
-         //! nHandle is vertex ID
-        void SetDeformedHandle(unsigned int nHandle, const Deform2D_Vector3* vHandle);
+     //! nHandle is vertex ID
+    void SetDeformedHandle(unsigned int nHandle, const Deform2D_Vector3* vHandle);
 
-        //void TransformPoint( Eigen::Vector2f & vTransform );
-        void UnTransformPoint(Deform2D_Vector3& vTransform);
+    //void TransformPoint( Eigen::Vector2f & vTransform );
+    void UnTransformPoint(Deform2D_Vector3& vTransform);
 
-        /*
-         * mesh handling
-         */
-        void SetMesh(
-            Deform2D_Vector3* vertices,
-            unsigned int vertexCount,
-            unsigned int* faces,
-            unsigned int faceCount
-        );
+    /*
+     * mesh handling
+     */
+    void SetMesh(
+        Deform2D_Vector3* vertices,
+        unsigned int vertexCount,
+        unsigned int* faces,
+        unsigned int faceCount
+    );
 
-        void GetDeformedMesh(
-            Deform2D_Vector3* vertices,
-            unsigned int vertexCount,
-            bool isRigid
-        );
+    void GetDeformedMesh(
+        Deform2D_Vector3* vertices,
+        unsigned int vertexCount,
+        bool isRigid
+    );
 
-        /*
-         * debug
-         */
-        const Eigen::Vector2f* GetTriangleVerts(unsigned int nTriangle) { return m_vTriangles[nTriangle].vScaled; }
-    protected:
+    void SetExternalSolver(
+        Deform2D_SolverComputeFunction computeFunction,
+        Deform2D_SolverSolveFunction solveFunction
+    );
 
-        struct Vertex {
-            Eigen::Vector2f vPosition;
-        };
+    /*
+     * debug
+     */
+    const Eigen::Vector2f* GetTriangleVerts(unsigned int nTriangle) { return m_vTriangles[nTriangle].vScaled; }
+protected:
 
-    public:
-        struct Triangle {
-            unsigned int nVerts[3];
+    struct Vertex {
+        Eigen::Vector2f vPosition;
+    };
 
-            // definition of each vertex in triangle-local coordinate system
-            Eigen::Vector2f vTriCoords[3];
+public:
+    struct Triangle {
+        unsigned int nVerts[3];
 
-            // un-scaled triangle
-            Eigen::Vector2f vScaled[3];
+        // definition of each vertex in triangle-local coordinate system
+        Eigen::Vector2f vTriCoords[3];
 
-            // pre-computed matrices for triangle scaling step
-            Eigen::MatrixXd mF, mC;
-        };
+        // un-scaled triangle
+        Eigen::Vector2f vScaled[3];
 
-    protected:
-        std::vector<Vertex> m_vInitialVerts;
-        std::vector<Vertex> m_vDeformedVerts;
+        // pre-computed matrices for triangle scaling step
+        Eigen::MatrixXd mF, mC;
+    };
 
-        std::vector<Triangle> m_vTriangles;
+protected:
+    std::vector<Vertex> m_vInitialVerts;
+    std::vector<Vertex> m_vDeformedVerts;
 
-
-        struct Constraint {
-            unsigned int nVertex;
-            Eigen::Vector2f vConstrainedPos;
-
-            Constraint() { nVertex = 0; vConstrainedPos = { 0, 0 }; }
-            Constraint(unsigned int nVert, const Eigen::Vector2f& vPos) { nVertex = nVert; vConstrainedPos = vPos; }
-
-            bool operator<(const Constraint& c2) const {
-                return nVertex < c2.nVertex;
-            }
-        };
-
-        std::set<Constraint> m_vConstraints;
-        void UpdateConstraint(Constraint& cons);
+    std::vector<Triangle> m_vTriangles;
 
 
-        bool m_bSetupValid;
-        void InvalidateSetup() { m_bSetupValid = false; }
-        void ValidateSetup();
+    struct Constraint {
+        unsigned int nVertex;
+        Eigen::Vector2f vConstrainedPos;
 
+        Constraint() { nVertex = 0; vConstrainedPos = { 0, 0 }; }
+        Constraint(unsigned int nVert, const Eigen::Vector2f& vPos) { nVertex = nVert; vConstrainedPos = vPos; }
 
-        Eigen::MatrixXd m_mFirstMatrix;
-        std::vector<unsigned int> m_vVertexMap;
-        Eigen::PartialPivLU<Eigen::MatrixXd> m_mGPrimeSolver;
-        Eigen::MatrixXd m_mB;
-        Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
-        Eigen::PartialPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
-        Eigen::MatrixXd m_mDX, m_mDY;
-
-        void PrecomputeOrientationMatrix();
-        void PrecomputeScalingMatrices(unsigned int nTriangle);
-        void PrecomputeFittingMatrices();
-
-        void ValidateDeformedMesh(bool bRigid);
-        void UpdateScaledTriangle(unsigned int nTriangle);
-        void ApplyFittingStep();
-
-        Eigen::Vector2f GetInitialVert(unsigned int nVert) {
-            return Eigen::Vector2f(m_vInitialVerts[nVert].vPosition.x(), m_vInitialVerts[nVert].vPosition.y());
+        bool operator<(const Constraint& c2) const {
+            return nVertex < c2.nVertex;
         }
     };
 
-} // namespace rmsimplicit
+    std::set<Constraint> m_vConstraints;
+    void UpdateConstraint(Constraint& cons);
+
+
+    bool m_bSetupValid;
+    void InvalidateSetup() { m_bSetupValid = false; }
+    void ValidateSetup();
+
+    Deform2D_SolverComputeFunction m_externalComputeFunction = nullptr;
+    Deform2D_SolverSolveFunction m_externalSolveFunction = nullptr;
+
+    Eigen::MatrixXd m_mFirstMatrix;
+    std::vector<unsigned int> m_vVertexMap;
+    Eigen::PartialPivLU<Eigen::MatrixXd> m_mGPrimeSolver;
+    Eigen::MatrixXd m_mB;
+    Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
+    Eigen::PartialPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
+    Eigen::MatrixXd m_mDX, m_mDY;
+
+    void PrecomputeOrientationMatrix();
+    void PrecomputeScalingMatrices(unsigned int nTriangle);
+    void PrecomputeFittingMatrices();
+
+    void ValidateDeformedMesh(bool bRigid);
+    void UpdateScaledTriangle(unsigned int nTriangle);
+    void ApplyFittingStep();
+
+    Eigen::Vector2f GetInitialVert(unsigned int nVert) {
+        return Eigen::Vector2f(m_vInitialVerts[nVert].vPosition.x(), m_vInitialVerts[nVert].vPosition.y());
+    }
+};

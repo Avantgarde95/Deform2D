@@ -7,72 +7,78 @@
 #include "RigidMeshDeformer2D.h"
 
 void* Deform2D_CreateDeformer() {
-	return new rmsmesh::RigidMeshDeformer2D();
+    return new RigidMeshDeformer2D();
 }
 
 void Deform2D_DestroyDeformer(
-	void* deformer
+    void* deformer
 ) {
-	delete deformer;
+    delete deformer;
 }
 
 void Deform2D_ForceValidation(
-	void* deformer
+    void* deformer
 ) {
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->ForceValidation();
+    static_cast<RigidMeshDeformer2D*>(deformer)->ForceValidation();
 }
 
 void Deform2D_SetDeformedHandle(
-	void* deformer,
-	int handleIndex,
-	const Deform2D_Vector3* handle
+    void* deformer,
+    int handleIndex,
+    const Deform2D_Vector3* handle
 ) {
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->SetDeformedHandle(handleIndex, handle);
+    static_cast<RigidMeshDeformer2D*>(deformer)->SetDeformedHandle(handleIndex, handle);
 }
 
 void Deform2D_RemoveHandle(
-	void* deformer,
-	int handleIndex
+    void* deformer,
+    int handleIndex
 ) {
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->RemoveHandle(handleIndex);
+    static_cast<RigidMeshDeformer2D*>(deformer)->RemoveHandle(handleIndex);
 }
 
 void Deform2D_SetMesh(
-	void* deformer,
-	Deform2D_Vector3* vertices,
-	int vertexCount,
-	int* faces,
-	int faceCount
+    void* deformer,
+    Deform2D_Vector3* vertices,
+    int vertexCount,
+    int* faces,
+    int faceCount
 ) {
-	// sizeof(signed) and sizeof(unsigned) are equal, so we can cast int* -> unsigned int* safely.
-	// https://stackoverflow.com/questions/13169451/do-i-have-the-guarantee-that-sizeoftype-sizeofunsigned-type?rq=1
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->SetMesh(vertices, vertexCount, (unsigned int*)faces, faceCount);
+    // sizeof(signed) and sizeof(unsigned) are equal, so we can cast int* -> unsigned int* safely.
+    // https://stackoverflow.com/questions/13169451/do-i-have-the-guarantee-that-sizeoftype-sizeofunsigned-type?rq=1
+    static_cast<RigidMeshDeformer2D*>(deformer)->SetMesh(vertices, vertexCount, (unsigned int*)faces, faceCount);
 }
 
 void Deform2D_GetDeformedMesh(
-	void* deformer,
-	Deform2D_Vector3* vertices,
-	int vertexCount,
-	bool isRigid
+    void* deformer,
+    Deform2D_Vector3* vertices,
+    int vertexCount,
+    bool isRigid
 ) {
-	static_cast<rmsmesh::RigidMeshDeformer2D*>(deformer)->GetDeformedMesh(vertices, vertexCount, isRigid);
+    static_cast<RigidMeshDeformer2D*>(deformer)->GetDeformedMesh(vertices, vertexCount, isRigid);
+}
+
+void Deform2D_SetExternalSolver(
+    void* deformer,
+    Deform2D_SolverComputeFunction computeFunction,
+    Deform2D_SolverSolveFunction solveFunction
+) {
+    static_cast<RigidMeshDeformer2D*>(deformer)->SetExternalSolver(computeFunction, solveFunction);
 }
 
 #ifdef _WIN32
-BOOL APIENTRY DllMain
-(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
+BOOL APIENTRY DllMain(HMODULE hModule,
+    DWORD  ul_reason_for_call,
+    LPVOID lpReserved
 ) {
-	switch (ul_reason_for_call) {
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
+    switch (ul_reason_for_call) {
+    case DLL_PROCESS_ATTACH:
+    case DLL_THREAD_ATTACH:
+    case DLL_THREAD_DETACH:
+    case DLL_PROCESS_DETACH:
+        break;
+    }
 
-	return TRUE;
+    return TRUE;
 }
 #endif
-
