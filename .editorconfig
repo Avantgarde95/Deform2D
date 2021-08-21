@@ -1,0 +1,4 @@
+[deform2d/*.{cpp,cc,cxx,hpp,h}]
+indent_style = space
+indent_size = 4
+charset = utf-8

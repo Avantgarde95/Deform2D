@@ -12,6 +12,11 @@ if(OpenMP_FOUND)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif(OpenMP_FOUND)
 
+if(MSVC)
+	add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+	add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+endif(MSVC)
+
 file(GLOB_RECURSE Deform2D_sources Deform2D/*.cpp)
 file(GLOB_RECURSE Deform2D_headers Deform2D/*.h)
 add_library(Deform2D SHARED ${Deform2D_sources})
@@ -27,4 +32,3 @@ if(OpenGL_FOUND)
     target_include_directories(App PRIVATE Deform2D third/eigen third/freeglut-3.2.1/include)
     target_link_libraries(App Deform2D ${OPENGL_LIBRARY} freeglut_static)
 endif(OpenGL_FOUND)
-
