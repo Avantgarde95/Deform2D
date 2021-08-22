@@ -1,5 +1,7 @@
 # Deform2D
 
+※ C++는 플랫폼마다 (Windows, Mac, Android, iOS) 빌드를 해야 하는 불편함이 있어 이 모듈을 C#로 이관하는 작업도 [별도로](https://github.com/Avantgarde95/Deform2D/tree/deformer-standalone) 진행중입니다.
+
 ### About
 
 Fork of [Deform2D](https://www.dgp.toronto.edu/~rms/software/Deform2D/index.html) for studying 2D deformation.
