@@ -60,10 +60,9 @@ void Deform2D_GetDeformedMesh(
 
 void Deform2D_SetExternalSolver(
     void* deformer,
-    Deform2D_SolverComputeFunction computeFunction,
-    Deform2D_SolverSolveFunction solveFunction
+    Deform2D_InversionFunction inverseFunction
 ) {
-    static_cast<RigidMeshDeformer2D*>(deformer)->SetExternalSolver(computeFunction, solveFunction);
+    static_cast<RigidMeshDeformer2D*>(deformer)->SetExternalSolver(inverseFunction);
 }
 
 #ifdef _WIN32

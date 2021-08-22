@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <limits>
+#include <cstring>
 
 class RigidMeshDeformer2D {
 public:
@@ -48,8 +49,7 @@ public:
     );
 
     void SetExternalSolver(
-        Deform2D_SolverComputeFunction computeFunction,
-        Deform2D_SolverSolveFunction solveFunction
+        Deform2D_InversionFunction inversionFunction
     );
 
     /*
@@ -103,15 +103,23 @@ protected:
     void InvalidateSetup() { m_bSetupValid = false; }
     void ValidateSetup();
 
-    Deform2D_SolverComputeFunction m_externalComputeFunction = nullptr;
-    Deform2D_SolverSolveFunction m_externalSolveFunction = nullptr;
+    Deform2D_InversionFunction m_externalInversionFunction = nullptr; /*[](double* AData, int size) {
+        Eigen::Map<Eigen::MatrixXd> A(AData, size, size);
+        Eigen::MatrixXd AInverse = A.inverse();
+        std::memcpy(AData, AInverse.data(), size * size * sizeof(double));
+    };*/
 
     Eigen::MatrixXd m_mFirstMatrix;
     std::vector<unsigned int> m_vVertexMap;
+
+    Eigen::MatrixXd m_mGPrime;
     Eigen::PartialPivLU<Eigen::MatrixXd> m_mGPrimeSolver;
+    std::vector<double> m_mGPrimeInverseData; // Used when we use the external inversion function.
+
     Eigen::MatrixXd m_mB;
     Eigen::MatrixXd m_mHXPrime, m_mHYPrime;
     Eigen::PartialPivLU<Eigen::MatrixXd> m_mHXPrimeSolver, m_mHYPrimeSolver;
+    std::vector<double> m_mHXPrimeInverseData, m_mHYPrimeInverseData; // Used when we use the external inversion function.
     Eigen::MatrixXd m_mDX, m_mDY;
 
     void PrecomputeOrientationMatrix();

@@ -99,10 +99,6 @@ void RigidMeshDeformer2D::SetDeformedHandle(unsigned int nHandle, const Deform2D
 {
     Constraint c(nHandle, { vHandle->x, vHandle->y });
     UpdateConstraint(c);
-
-    if (m_externalComputeFunction != nullptr) {
-        m_externalComputeFunction(testArray);
-    }
 }
 
 void RigidMeshDeformer2D::RemoveHandle(unsigned int nHandle)
@@ -224,13 +220,10 @@ void RigidMeshDeformer2D::GetDeformedMesh(
     }
 }
 
-
 void RigidMeshDeformer2D::SetExternalSolver(
-    Deform2D_SolverComputeFunction computeFunction,
-    Deform2D_SolverSolveFunction solveFunction
+    Deform2D_InversionFunction inversionFunction
 ) {
-    m_externalComputeFunction = computeFunction;
-    m_externalSolveFunction = solveFunction;
+    m_externalInversionFunction = inversionFunction;
 }
 
 void RigidMeshDeformer2D::UpdateConstraint(Constraint& cons)
@@ -430,8 +423,21 @@ void RigidMeshDeformer2D::PrecomputeFittingMatrices()
 
     auto luStart = getTime();
     // pre-compute LU decompositions
-    m_mHXPrimeSolver.compute(m_mHXPrime);
-    m_mHYPrimeSolver.compute(m_mHYPrime);
+    if (m_externalInversionFunction == nullptr) {
+        m_mHXPrimeSolver.compute(m_mHXPrime);
+        m_mHYPrimeSolver.compute(m_mHYPrime);
+    }
+    else {
+        int mHXPrimeSize = m_mHXPrime.rows();
+        m_mHXPrimeInverseData = std::vector<double>(m_mHXPrime.data(), m_mHXPrime.data() + mHXPrimeSize * mHXPrimeSize);
+        m_externalInversionFunction(m_mHXPrimeInverseData.data(), mHXPrimeSize);
+
+        int mHYPrimeSize = m_mHYPrime.rows();
+        m_mHYPrimeInverseData = std::vector<double>(m_mHYPrime.data(), m_mHYPrime.data() + mHYPrimeSize * mHYPrimeSize);
+        m_externalInversionFunction(m_mHYPrimeInverseData.data(), mHYPrimeSize);
+    }
+    std::cout << m_mHXPrime.rows() << ", " << m_mHXPrime.cols() << "\n";
+    std::cout << m_mHYPrime.rows() << ", " << m_mHYPrime.cols() << "\n";
     auto luEnd = getTime();
     printDuration("-- LU decompositions", luStart, luEnd);
 }
@@ -498,7 +504,15 @@ void RigidMeshDeformer2D::ApplyFittingStep()
     //Eigen::VectorXd vSolutionX((int)nFreeVerts);
 
     //Wml::LinearSystemd::Solve( m_mHXPrime, vRHSX, vSolutionX );
-    Eigen::VectorXd vSolutionX = m_mHXPrimeSolver.solve(vRHSX);
+    Eigen::VectorXd vSolutionX;
+
+    if (m_externalInversionFunction == nullptr) {
+        vSolutionX = m_mHXPrimeSolver.solve(vRHSX);
+    }
+    else {
+        Eigen::Map<Eigen::MatrixXd> mHXPrimeInverseView(m_mHXPrimeInverseData.data(), m_mHXPrime.rows(), m_mHXPrime.cols());
+        vSolutionX = mHXPrimeInverseView * vRHSX;
+    }
 
     // now for Y
     Eigen::VectorXd vRHSY(m_mDY * vQY);
@@ -507,7 +521,15 @@ void RigidMeshDeformer2D::ApplyFittingStep()
     //Eigen::VectorXd vSolutionY((int)nFreeVerts);
 
     //	Wml::LinearSystemd::Solve( m_mHYPrime, vRHSY, vSolutionY );
-    Eigen::VectorXd vSolutionY = m_mHYPrimeSolver.solve(vRHSY);
+    Eigen::VectorXd vSolutionY;
+
+    if (m_externalInversionFunction == nullptr) {
+        vSolutionY = m_mHYPrimeSolver.solve(vRHSY);
+    }
+    else {
+        Eigen::Map<Eigen::MatrixXd> mHYPrimeInverseView(m_mHYPrimeInverseData.data(), m_mHYPrime.rows(), m_mHYPrime.cols());
+        vSolutionY = mHYPrimeInverseView * vRHSY;
+    }
 
     // done!
     for (unsigned int i = 0; i < nVerts; ++i) {
@@ -742,16 +764,25 @@ void RigidMeshDeformer2D::PrecomputeOrientationMatrix()
 
     auto gPrimeStart = getTime();
     // ok, now compute GPrime = G00 + Transpose(G00) and B = G01 + Transpose(G10)
-    Eigen::MatrixXd mGPrime = mG00 + mG00.transpose();
+    m_mGPrime = mG00 + mG00.transpose();
     //Eigen::MatrixXd mB = mG01 + mG10.transpose();
     m_mB = mG01 + mG10.transpose();
     auto gPrimeEnd = getTime();
     printDuration("-- Compute GPrime", gPrimeStart, gPrimeEnd);
 
-    std::cout << "mGPrime: " << mGPrime.rows() << " rows, " << mGPrime.cols() << " columns" << std::endl;
+    std::cout << "mGPrime: " << m_mGPrime.rows() << " rows, " << m_mGPrime.cols() << " columns" << std::endl;
 
     auto finalStart = getTime();
-    m_mGPrimeSolver.compute(mGPrime);
+
+    if (m_externalInversionFunction == nullptr) {
+        m_mGPrimeSolver.compute(m_mGPrime);
+    }
+    else {
+        int mGPrimeSize = m_mGPrime.rows();
+        m_mGPrimeInverseData = std::vector<double>(m_mGPrime.data(), m_mGPrime.data() + mGPrimeSize * mGPrimeSize);
+        m_externalInversionFunction(m_mGPrimeInverseData.data(), mGPrimeSize);
+    }
+
     //m_mFirstMatrix = -mGPrime.inverse() * m_mB;
     auto finalEnd = getTime();
     printDuration("-- Compute mFinal", finalStart, finalEnd);
@@ -952,7 +983,16 @@ void RigidMeshDeformer2D::ValidateDeformedMesh(bool bRigid)
         ++k;
     }
 
-    Eigen::VectorXd vU = m_mGPrimeSolver.solve(-m_mB * vQ);
+    Eigen::VectorXd vU;
+
+    if (m_externalInversionFunction == nullptr) {
+        vU = m_mGPrimeSolver.solve(-m_mB * vQ);
+    }
+    else {
+        Eigen::Map<Eigen::MatrixXd> mGPrimeInverseView(m_mGPrimeInverseData.data(), m_mGPrime.rows(), m_mGPrime.cols());
+        vU = mGPrimeInverseView * (-m_mB * vQ);
+    }
+
     size_t nVerts = m_vDeformedVerts.size();
     for (unsigned int i = 0; i < nVerts; ++i) {
         Constraint c(i, { 0, 0 });

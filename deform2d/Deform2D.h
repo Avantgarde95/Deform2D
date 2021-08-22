@@ -41,7 +41,6 @@ extern "C" {
 
     DEFORM2D_API void Deform2D_SetExternalSolver(
         void* deformer,
-        Deform2D_SolverComputeFunction computeFunction,
-        Deform2D_SolverSolveFunction solveFunction
+        Deform2D_InversionFunction inversionFunction
     );
 }

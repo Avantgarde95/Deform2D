@@ -18,5 +18,4 @@ struct Deform2D_Vector3 {
 	float z;
 };
 
-typedef void(__stdcall* Deform2D_SolverComputeFunction)(double* A);
-typedef void(__stdcall* Deform2D_SolverSolveFunction)(double* B, double* v);
+typedef void(__stdcall* Deform2D_InversionFunction)(double* A, int size);
