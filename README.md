@@ -15,6 +15,8 @@ Differences from the original source code
 ### How to build
 
 - Install [CMake](https://cmake.org/)
+- Clone Eigen
+  - Just run `git submodule update --init --remote`
 - `cmake . -Bbuild_[platform] -DCMAKE_BUILD_TYPE=[type]`
   - ex. `cmake . -Bbuild_linux -DCMAKE_BUILD_TYPE=Release`
 - To build the **Deform2D library**
@@ -28,6 +30,13 @@ Differences from the original source code
     - ex. In Linux, install `libgl1-mesa-dev`, `libglu1-mesa-dev`, and `libxi-dev`.
   - Run `make`
   - Run `./App`
+
+### TODO
+- Build for Android / iOS
+  - Android: We can use Android NDK + CMake
+  - iOS: ???
+- Or... migrate from C++ to C#
+  - For easier building & debugging
 
 ### Original README
 
