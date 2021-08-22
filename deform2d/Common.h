@@ -8,8 +8,10 @@
     #endif
 #elif defined(__GNUC__)
     #define DEFORM2D_API __attribute__((visibility("default")))
+    #define __stdcall
 #else
     #define DEFORM2D_API
+    #define __stdcall
 #endif
 
 struct Deform2D_Vector3 {
