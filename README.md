@@ -10,7 +10,10 @@ Differences from the original source code
   - Replaced WildMagic2 to [Eigen](https://eigen.tuxfamily.org/).
 - Sample app
   - MFC (used for file dialog) dependency is removed, and the file dialog is replaced to console input (`std::cin`).
-  - Supports .obj files which don't have the vertex normals. (i.e Faces can have `f number number number` form.)
+  - Supports .obj files without vertex normals, too. (i.e Faces can have `f number number number` form.)
+
+![Screenshot](https://raw.githubusercontent.com/Avantgarde95/Deform2D/master/Screenshot.png)
+[Video](https://youtu.be/n1utcizkp-A)
 
 ### How to build
 
