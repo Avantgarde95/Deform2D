@@ -1,7 +1,5 @@
 # Deform2D
 
-※ C++는 플랫폼마다 (Windows, Mac, Android, iOS) 빌드를 해야 하는 불편함이 있어 이 모듈을 C#로 이관하는 작업도 [별도로](https://github.com/Avantgarde95/Deform2D/tree/deformer-standalone) 진행중입니다.
-
 ### About
 
 Fork of [Deform2D](https://www.dgp.toronto.edu/~rms/software/Deform2D/index.html) for studying 2D deformation.
@@ -10,7 +8,7 @@ Differences from the original source code
 - Common
   - Uses [CMake](https://cmake.org/) to build the code so you can build this in any platform.
   - Replaced WildMagic2 to [Eigen](https://eigen.tuxfamily.org/).
-- Sample aspp
+- Sample app
   - MFC (used for file dialog) dependency is removed, and the file dialog is replaced to console input (`std::cin`).
   - Supports .obj files which don't have the vertex normals. (i.e Faces can have `f number number number` form.)
 
@@ -33,12 +31,17 @@ Differences from the original source code
   - Run `make`
   - Run `./App`
 
-### TODO
-- Build for Android / iOS
-  - Android: We can use Android NDK + CMake
-  - iOS: ???
-- Or... migrate from C++ to C#
-  - For easier building & debugging
+### How to use
+
+- Run `./App`
+- How to deform the model
+  - Press the right mouse button on a vertex to put a 'handle' (red point) on the vertex
+  - Put at least 2 'handles'
+  - Press the left mouse on a handle and drag it
+- How to change the mesh
+  - Click on the GUI (to focus on the GUI window) and press 'f' key
+  - Type the mesh's path on the console
+  - Only 2D meshes in .obj format are supported
 
 ### Original README
 
